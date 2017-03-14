@@ -1,5 +1,5 @@
 <template id="index">
-	<h1>Index</h1>
+	<div class="frame">Monaco Font</div>
 </template>
 <script>
 	module.exports = {

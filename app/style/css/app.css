@@ -1,0 +1,11 @@
+@import './new_feature.css';
+@import './app.scss';
+
+.frame{
+  padding:10px;
+  margin:10px;
+  background-color: #fff;
+  border-radius: 5px;
+  border: 1px solid red;
+  box-shadow: 2px 2px 8px #ccc;
+}
