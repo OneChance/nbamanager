@@ -1,4 +1,4 @@
-// nodejs 中的path模块
+ // nodejs 中的path模块
 var path = require('path');
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var webpack = require('webpack');
@@ -31,7 +31,7 @@ module.exports = {
               exclude: [path.resolve(__dirname, 'node_modules')]
           }, {
               test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
-              use: 'url-loader?limit=8192&name=images/[hash:8].[name].[ext]'
+              use: ['url-loader?limit=8192&name=images/[hash:8].[name].[ext]','image-webpack-loader']
           }, {
               test: /\.css$/,
               use: ['style-loader','css-loader?importLoaders=1','postcss-loader']
@@ -58,6 +58,6 @@ module.exports = {
             template: path.resolve(__dirname, 'app/index.html'),
             inject: true
         }),
-        new webpack.HotModuleReplacementPlugin()
+        //new webpack.HotModuleReplacementPlugin()
     ]
 };

@@ -11,4 +11,4 @@ window.onload = function() {
 
 require('./style/css/bootstrap.min.css');
 require('./style/css/font-awesome.min.css');
-require('./style/css/app.css');
+require('./style/css/app.scss');
