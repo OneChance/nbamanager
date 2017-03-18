@@ -22,7 +22,7 @@
 <script>
 import ServerMock from '../script/server-mock.js'
 export default {
-    props: ['player'],
+    props: ['player','index'],
     data: function() {
         return {
             img: require("../style/images/player/" + this.player.img + ".jpg")
@@ -30,12 +30,16 @@ export default {
     },
     methods: {
         breakContract: function() {
-            ServerMock.breakContract(this.player);
-            this.$emit('contrackChange');
+            ServerMock.breakContract(this.index);
         },
         signContract: function() {
-            ServerMock.signContract(this.player);
+            ServerMock.signContract(this.index);
         }
+    },
+    updated:function(){
+      this.$nextTick(function () {
+        this.img = require("../style/images/player/" + this.player.img + ".jpg")
+      });
     }
 }
 </script>

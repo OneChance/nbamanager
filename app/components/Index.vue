@@ -6,9 +6,9 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-6">
-                <ul class="list-group">
-                    <li class="list-group-item" v-for="player in team_players">
-                        <player-component :player='player' v-on:contrackChange="updateContract"></player-component>
+                <ul class="list-group" role="team-players">
+                    <li class="list-group-item" v-for="(player,index) in team_players">
+                        <player-component :player='player' :index='index'></player-component>
                     </li>
                 </ul>
             </div>
@@ -55,8 +55,8 @@
                             </div>
                         </div>
                         <ul class="list-group">
-                            <li class="list-group-item" v-for="player in market_players">
-                                <player-component :player='player'></player-component>
+                            <li class="list-group-item" v-for="(player,index) in market_players">
+                                <player-component :player='player' :index='index'></player-component>
                             </li>
                         </ul>
                     </div>
@@ -80,18 +80,12 @@ import ServerMock from '../script/server-mock.js'
 export default {
     data: function() {
         return {
-            team_players: [],
-            market_players: []
+            team_players: ServerMock.getTeamPlayers(),
+            market_players: ServerMock.getMarketPlayers()
         }
     },
     methods: {
-        updateContract: function() {
-            //this.team_players = [];
-            setTimeout(() => {
-                this.team_players = ServerMock.team_players;
-                this.market_players = ServerMock.market_players;
-            }, 1);
-        }
+
     },
     created: function() {
 
@@ -101,8 +95,6 @@ export default {
             e.preventDefault();
             $(this).tab('show');
         });
-        ServerMock.init();
-        this.updateContract();
     },
     components: {
         PlayerComponent

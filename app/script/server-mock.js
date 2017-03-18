@@ -2,21 +2,22 @@ export default {
     team_players: [],
     market_players: [],
 
-    init: function() {
-        this.team_players = players.splice(0, 4);
-        this.team_players.map(player => player.inTeam = true);
-        this.market_players = players;
-        this.market_players.map(player => player.inTeam = false);
-    },
-    breakContract: function(player) {
-
-        let index = this.team_players.findIndex(function(value, index, arr) {
-            return value.img === player.img;
+    getTeamPlayers: function() {
+        return this.team_players = players.splice(0, 4).map(player => {
+            player.inTeam = true;
+            return player;
         });
-        
-        this.team_players.splice(index,1);
-
-        //  this.market_players.push(this.team_players.splice(index,1));
+    },
+    getMarketPlayers: function() {
+        return this.market_players = players.map(player => {
+            player.inTeam = false;
+            return player
+        });
+    },
+    breakContract: function(index) {
+        let breakPlayer = this.team_players.splice(index, 1)[0];
+        breakPlayer.inTeam = false;
+        this.market_players.push(breakPlayer);
     }
 }
 
