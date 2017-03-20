@@ -86,14 +86,18 @@ export default {
 
     },
     mounted: function() {
+
+        let indexComponent = this;
+
         $('#infos a').click(function(e) {
             e.preventDefault();
             $(this).tab('show');
         });
+        
         $(".get-more").on('click', function(e) {
             var $btn = $(this).button('loading');
             setTimeout(function() {
-                ServerMock.getMarketPlayers();
+                indexComponent.market_players =  ServerMock.getMarketPlayers();
                 $btn.button('reset');
             }, 1000);
         });

@@ -16,13 +16,12 @@ export default {
             player.inTeam = false;
             return player;
         });
-
-        return [...this.market_players, ...toAdd];
+        return this.market_players = [...this.market_players, ...toAdd];;
     },
     breakContract: function(index) {
         let breakPlayer = this.team_players.splice(index, 1)[0];
         breakPlayer.inTeam = false;
-        this.market_players.push(breakPlayer);
+        players.push(breakPlayer);
     },
     signContract: function(index) {
         if (this.team_players.length === 5) {
@@ -63,20 +62,20 @@ var players = [{
         pos: 'SF',
         money: 2900,
         today: {
-            min: '36',
-            fg: '12/17',
-            p3: '0/0',
-            ft: '7/8',
-            oreb: '4',
-            dreb: '15',
-            reb: '19',
-            ast: '2',
-            st: '0',
-            blk: '3',
-            to: '1',
-            pf: '3',
-            pts: '31',
-            eff: '22'
+            min: '30',
+            fg: '8/13',
+            p3: '2/4',
+            ft: '4/5',
+            oreb: '1',
+            dreb: '2',
+            reb: '3',
+            ast: '6',
+            st: '1',
+            blk: '1',
+            to: '2',
+            pf: '1',
+            pts: '22',
+            eff: '15'
         }
     },
     {
@@ -85,7 +84,7 @@ var players = [{
         pos: 'PG',
         money: 4000,
         today: {
-            min: '36',
+            min: '32',
             fg: '12/17',
             p3: '0/0',
             ft: '7/8',
