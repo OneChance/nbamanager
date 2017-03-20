@@ -6,14 +6,10 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-6">
-                <ul class="list-group" role="team-players">
-                    <li class="list-group-item" v-for="(player,index) in team_players">
-                        <player-component :player='player' :index='index'></player-component>
-                    </li>
-                </ul>
+                <player-list-component v-bind:players="team_players" v:bind:more=false></player-list-component>
             </div>
             <div class="col-md-6">
-                <ul class="nav nav-pills" id="myTabs">
+                <ul class="nav nav-pills" id="infos">
                     <li role="presentation" class="active"><a href="#team">Team</a></li>
                     <li role="presentation"><a href="#market">Market</a></li>
                     <li role="presentation"><a href="#sign_log">Sign Log</a></li>
@@ -55,9 +51,8 @@
                             </div>
                         </div>
                         <ul class="list-group">
-                            <li class="list-group-item" v-for="(player,index) in market_players">
-                                <player-component :player='player' :index='index'></player-component>
-                            </li>
+                            <player-list-component v-bind:players="market_players"></player-list-component>
+                            <button type="button" class="btn btn-success btn-lg btn-block get-more">More</button>
                         </ul>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="sign_log">
@@ -74,7 +69,7 @@
 </template>
 
 <script>
-import PlayerComponent from './Player.vue'
+import PlayerListComponent from './PlayerList.vue'
 import ServerMock from '../script/server-mock.js'
 
 export default {
@@ -91,23 +86,37 @@ export default {
 
     },
     mounted: function() {
-        $('#myTabs a').click(function(e) {
+        $('#infos a').click(function(e) {
             e.preventDefault();
             $(this).tab('show');
         });
+        $(".get-more").on('click', function(e) {
+            var $btn = $(this).button('loading');
+            setTimeout(function() {
+                ServerMock.getMarketPlayers();
+                $btn.button('reset');
+            }, 1000);
+        });
     },
     components: {
-        PlayerComponent
+        PlayerListComponent
     }
 }
 </script>
 
-<style>
+<style scoped>
 .search {
     margin: 10px;
 }
 
 .team-info {
     margin-top: 10px;
+}
+
+.alert {
+    display: none;
+    position: fixed;
+    top: 10px;
+    right: 10px;
 }
 </style>

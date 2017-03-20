@@ -22,27 +22,22 @@
      },
      module: {
          rules: [{
-                 test: require.resolve('jquery'),
-                 loader: 'expose-loader?jQuery!expose-loader?$'
-             },
-             {
-                 test: /\.vue$/,
-                 use: ['vue-loader']
-             }, {
-                 test: /\.js$/,
-                 loader: 'babel-loader?presets=es2015',
-                 exclude: [path.resolve(__dirname, 'node_modules')]
-             }, {
-                 test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
-                 use: ['url-loader?limit=8192&name=images/[hash:8].[name].[ext]', 'image-webpack-loader']
-             }, {
-                 test: /\.css$/,
-                 use: ['style-loader', 'css-loader?importLoaders=1', 'postcss-loader']
-             }, {
-                 test: /\.scss$/,
-                 use: ['style-loader', 'css-loader?importLoaders=1', 'postcss-loader', 'sass-loader']
-             }
-         ]
+             test: /\.vue$/,
+             use: ['vue-loader']
+         }, {
+             test: /\.js$/,
+             loader: 'babel-loader?presets=es2015',
+             exclude: [path.resolve(__dirname, 'node_modules')]
+         }, {
+             test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
+             use: ['url-loader?limit=8192&name=images/[hash:8].[name].[ext]', 'image-webpack-loader']
+         }, {
+             test: /\.css$/,
+             use: ['style-loader', 'css-loader?importLoaders=1', 'postcss-loader']
+         }, {
+             test: /\.scss$/,
+             use: ['style-loader', 'css-loader?importLoaders=1', 'postcss-loader', 'sass-loader']
+         }]
      },
      resolve: {
          extensions: [".js", ".css", ".scss"],
@@ -60,6 +55,9 @@
              filename: 'index.html',
              template: path.resolve(__dirname, 'app/index.html'),
              inject: true
+         }), new webpack.ProvidePlugin({
+             jQuery: "jquery",
+             $: "jquery"
          })
      ]
  };
