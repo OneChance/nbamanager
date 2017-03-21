@@ -57,7 +57,8 @@
              inject: true
          }), new webpack.ProvidePlugin({
              jQuery: "jquery",
-             $: "jquery"
+             $: "jquery",
+             Chart:"chart.js"
          })
      ]
  };

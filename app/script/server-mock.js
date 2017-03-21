@@ -34,6 +34,23 @@ export default {
     }
 }
 
+var chartCommon = {
+    fillColor: "rgba(151,187,205,0.5)",
+    strokeColor: "rgba(151,187,205,1)",
+    pointColor: "rgba(151,187,205,1)",
+    pointStrokeColor: "#fff",
+    fill: false,
+    borderColor: "rgba(75,192,192,1)",
+    borderCapStyle: 'butt',
+    pointBorderWidth: 1,
+    pointHoverRadius: 5,
+    pointHoverBorderWidth: 2,
+    pointRadius: 1,
+    pointHoverBackgroundColor: "rgba(75,192,192,1)",
+    pointHoverBorderColor: "rgba(220,220,220,1)",
+    pointHitRadius: 10,
+}
+
 var players = [{
         img: '5007',
         name: 'Anthony Davis',
@@ -54,6 +71,14 @@ var players = [{
             pf: '3',
             pts: '31',
             eff: '22'
+        },
+        latestGames: {
+            labels: ["17/01/23", "17/01/24", "17/01/28", "17/02/03", "17/02/05", "17/02/06", "17/02/08"],
+            datasets: [
+                Object.assign({}, chartCommon, {
+                    data: [28, 22, 18, 30, 17, 9, 25],
+                })
+            ]
         }
     },
     {
@@ -76,6 +101,14 @@ var players = [{
             pf: '1',
             pts: '22',
             eff: '15'
+        },
+        latestGames: {
+            labels: ["17/01/23", "17/01/24", "17/01/28", "17/02/03", "17/02/05", "17/02/06", "17/02/08"],
+            datasets: [
+                Object.assign({}, chartCommon, {
+                    data: [1, 2, 3, 4, 5, 6, 7],
+                })
+            ]
         }
     },
     {
@@ -98,6 +131,16 @@ var players = [{
             pf: '3',
             pts: '31',
             eff: '22'
+        },
+        latestGames: {
+            labels: ["17/01/23", "17/01/24", "17/01/28", "17/02/03", "17/02/05", "17/02/06", "17/02/08"],
+            datasets: [{
+                fillColor: "rgba(151,187,205,0.5)",
+                strokeColor: "rgba(151,187,205,1)",
+                pointColor: "rgba(151,187,205,1)",
+                pointStrokeColor: "#fff",
+                data: [28, 22, 18, 30, 17, 9, 25]
+            }]
         }
     }, {
         img: '3704',
@@ -119,6 +162,16 @@ var players = [{
             pf: '3',
             pts: '31',
             eff: '22'
+        },
+        latestGames: {
+            labels: ["17/01/23", "17/01/24", "17/01/28", "17/02/03", "17/02/05", "17/02/06", "17/02/08"],
+            datasets: [{
+                fillColor: "rgba(151,187,205,0.5)",
+                strokeColor: "rgba(151,187,205,1)",
+                pointColor: "rgba(151,187,205,1)",
+                pointStrokeColor: "#fff",
+                data: [30, 28, 27, 31, 35, 30, 26]
+            }]
         }
     },
     {
@@ -141,6 +194,16 @@ var players = [{
             pf: '3',
             pts: '31',
             eff: '22'
+        },
+        latestGames: {
+            labels: ["17/01/23", "17/01/24", "17/01/28", "17/02/03", "17/02/05", "17/02/06", "17/02/08"],
+            datasets: [{
+                fillColor: "rgba(151,187,205,0.5)",
+                strokeColor: "rgba(151,187,205,1)",
+                pointColor: "rgba(151,187,205,1)",
+                pointStrokeColor: "#fff",
+                data: [28, 22, 18, 30, 17, 9, 25]
+            }]
         }
     },
     {
@@ -163,6 +226,16 @@ var players = [{
             pf: '3',
             pts: '31',
             eff: '22'
+        },
+        latestGames: {
+            labels: ["17/01/23", "17/01/24", "17/01/28", "17/02/03", "17/02/05", "17/02/06", "17/02/08"],
+            datasets: [{
+                fillColor: "rgba(151,187,205,0.5)",
+                strokeColor: "rgba(151,187,205,1)",
+                pointColor: "rgba(151,187,205,1)",
+                pointStrokeColor: "#fff",
+                data: [28, 22, 18, 30, 17, 9, 25]
+            }]
         }
     },
     {
@@ -185,6 +258,16 @@ var players = [{
             pf: '3',
             pts: '31',
             eff: '22'
+        },
+        latestGames: {
+            labels: ["17/01/23", "17/01/24", "17/01/28", "17/02/03", "17/02/05", "17/02/06", "17/02/08"],
+            datasets: [{
+                fillColor: "rgba(151,187,205,0.5)",
+                strokeColor: "rgba(151,187,205,1)",
+                pointColor: "rgba(151,187,205,1)",
+                pointStrokeColor: "#fff",
+                data: [28, 22, 18, 30, 17, 9, 25]
+            }]
         }
     },
     {
@@ -207,6 +290,16 @@ var players = [{
             pf: '3',
             pts: '31',
             eff: '22'
+        },
+        latestGames: {
+            labels: ["17/01/23", "17/01/24", "17/01/28", "17/02/03", "17/02/05", "17/02/06", "17/02/08"],
+            datasets: [{
+                fillColor: "rgba(151,187,205,0.5)",
+                strokeColor: "rgba(151,187,205,1)",
+                pointColor: "rgba(151,187,205,1)",
+                pointStrokeColor: "#fff",
+                data: [28, 22, 18, 30, 17, 9, 25]
+            }]
         }
     },
     {
@@ -229,6 +322,16 @@ var players = [{
             pf: '3',
             pts: '31',
             eff: '22'
+        },
+        latestGames: {
+            labels: ["17/01/23", "17/01/24", "17/01/28", "17/02/03", "17/02/05", "17/02/06", "17/02/08"],
+            datasets: [{
+                fillColor: "rgba(151,187,205,0.5)",
+                strokeColor: "rgba(151,187,205,1)",
+                pointColor: "rgba(151,187,205,1)",
+                pointStrokeColor: "#fff",
+                data: [28, 22, 18, 30, 17, 9, 25]
+            }]
         }
     },
     {
@@ -251,6 +354,16 @@ var players = [{
             pf: '3',
             pts: '31',
             eff: '22'
+        },
+        latestGames: {
+            labels: ["17/01/23", "17/01/24", "17/01/28", "17/02/03", "17/02/05", "17/02/06", "17/02/08"],
+            datasets: [{
+                fillColor: "rgba(151,187,205,0.5)",
+                strokeColor: "rgba(151,187,205,1)",
+                pointColor: "rgba(151,187,205,1)",
+                pointStrokeColor: "#fff",
+                data: [15, 20, 13, 22, 11, 7, 18]
+            }]
         }
     },
     {
@@ -273,6 +386,16 @@ var players = [{
             pf: '3',
             pts: '31',
             eff: '22'
+        },
+        latestGames: {
+            labels: ["17/01/23", "17/01/24", "17/01/28", "17/02/03", "17/02/05", "17/02/06", "17/02/08"],
+            datasets: [{
+                fillColor: "rgba(151,187,205,0.5)",
+                strokeColor: "rgba(151,187,205,1)",
+                pointColor: "rgba(151,187,205,1)",
+                pointStrokeColor: "#fff",
+                data: [28, 22, 18, 30, 17, 9, 25]
+            }]
         }
     },
     {
@@ -295,6 +418,16 @@ var players = [{
             pf: '3',
             pts: '31',
             eff: '22'
+        },
+        latestGames: {
+            labels: ["17/01/23", "17/01/24", "17/01/28", "17/02/03", "17/02/05", "17/02/06", "17/02/08"],
+            datasets: [{
+                fillColor: "rgba(151,187,205,0.5)",
+                strokeColor: "rgba(151,187,205,1)",
+                pointColor: "rgba(151,187,205,1)",
+                pointStrokeColor: "#fff",
+                data: [28, 22, 18, 30, 17, 9, 25]
+            }]
         }
     }
 ]

@@ -21,12 +21,12 @@
 
         <div class="collapse statistic" id="collapseExample">
             <ul class="nav nav-pills" id="statistic">
-                <li role="presentation" class="active"><a href="#today">Today</a></li>
-                <li role="presentation"><a href="#game7">Latest 7 Games</a></li>
+                <li role="presentation" class="active"><a :href="'#'+player.img+'-today'">Today</a></li>
+                <li role="presentation"><a :href="'#'+player.img+'-latest-games'">Latest Games</a></li>
             </ul>
-            <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="today">
-                    <table class="table table-bordered table-striped table-hover team-info">
+            <div class="tab-content player-statistic">
+                <div role="tabpanel" class="tab-pane active" :id="player.img+'-today'">
+                    <table class="table table-bordered table-striped table-hover today-info">
                         <tbody>
                             <tr>
                                 <th>MIN</th>
@@ -67,7 +67,8 @@
                         </tbody>
                     </table>
                 </div>
-                <div role="tabpanel" class="tab-pane active" id="game7">
+                <div role="tabpanel" class="tab-pane" :id="player.img+'-latest-games'">
+                    <player-latest-games v-bind:playerImg="player.img" v-bind:latestGames="player.latestGames"></player-latest-games>
                 </div>
             </div>
         </div>
@@ -76,6 +77,7 @@
 </template>
 <script>
 import ServerMock from '../script/server-mock.js'
+import PlayerLatestGames from './PlayerLatestGames.vue'
 
 export default {
     props: ['player', 'index'],
@@ -107,6 +109,9 @@ export default {
             $(this).tab('show');
             return false;
         });
+    },
+    components: {
+        PlayerLatestGames
     }
 }
 </script>
@@ -140,7 +145,11 @@ export default {
     padding: 10px;
 }
 
-#today table th,
+.player-statistic {
+    margin-top: 10px;
+}
+
+.today-info th,
 td {
     text-align: center;
 }

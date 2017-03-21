@@ -4,12 +4,14 @@
 <head>
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
-    <title>WEBPACK</title>
+    <title>NBA Manager</title>
 </head>
 
 <body>
     <div id="app">
-        <index-component></index-component>
+        <transition name='router' mode="out-in">
+            <router-view></router-view>
+        </transition>
     </div>
 </body>
 

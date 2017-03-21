@@ -1,11 +1,21 @@
-@import './app2.scss';
+html,body,#app{
+  height: 100%;
+}
 
-.frame{
-  padding:10px;
-  margin:10px;
-  background-color: #fff;
-  border-radius: 5px;
-  border: 1px solid red;
-  box-shadow: 2px 2px 8px #ccc;
-  display: flex;
+.router-enter-active {
+    transition: all .3s ease;
+}
+
+.router-leave-active {
+    transition: all .3s ease;
+}
+
+.router-enter,
+.router-leave-active {
+    opacity: 0;
+}
+
+.goup-container {
+    z-index: 200;
+    background: #2c3e50 !important;
 }

@@ -1,7 +1,7 @@
 <template id="index">
 <div id="frame">
     <div class="jumbotron">
-        <h1>Hello, world!</h1>
+        <h1>NBA Manager</h1>
     </div>
     <div class="container-fluid">
         <div class="row">
@@ -66,6 +66,7 @@
         </div>
     </div>
 </div>
+</div>
 </template>
 
 <script>
@@ -76,7 +77,8 @@ export default {
     data: function() {
         return {
             team_players: ServerMock.getTeamPlayers(),
-            market_players: ServerMock.getMarketPlayers()
+            market_players: ServerMock.getMarketPlayers(),
+            login: false
         }
     },
     methods: {
@@ -87,17 +89,25 @@ export default {
     },
     mounted: function() {
 
+        $.goup({
+            trigger: 100,
+            bottomOffset: 150,
+            locationOffset: 100,
+            title: '',
+            titleAsText: true
+        });
+
         let indexComponent = this;
 
         $('#infos a').click(function(e) {
             e.preventDefault();
             $(this).tab('show');
         });
-        
+
         $(".get-more").on('click', function(e) {
             var $btn = $(this).button('loading');
             setTimeout(function() {
-                indexComponent.market_players =  ServerMock.getMarketPlayers();
+                indexComponent.market_players = ServerMock.getMarketPlayers();
                 $btn.button('reset');
             }, 1000);
         });
@@ -115,12 +125,5 @@ export default {
 
 .team-info {
     margin-top: 10px;
-}
-
-.alert {
-    display: none;
-    position: fixed;
-    top: 10px;
-    right: 10px;
 }
 </style>
