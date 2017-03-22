@@ -22,19 +22,19 @@
                             <tbody>
                                 <tr>
                                     <th>TeamName</th>
-                                    <td>rfasdfasdf</td>
+                                    <td>{{team.name}}</td>
                                 </tr>
                                 <tr>
-                                    <th>Capital</th>
-                                    <td>$30000</td>
+                                    <th>Money</th>
+                                    <td>{{team.money}}</td>
                                 </tr>
                                 <tr>
-                                    <th>Venue scale</th>
-                                    <td>40000</td>
+                                    <th>Arena</th>
+                                    <td>{{team.arena.name}}</td>
                                 </tr>
                                 <tr>
-                                    <th>Fans</th>
-                                    <td>1000000000</td>
+                                    <th>Capacity</th>
+                                    <td>{{team.arena.cap}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -72,13 +72,18 @@
 <script>
 import PlayerListComponent from './PlayerList.vue'
 import ServerMock from '../script/server-mock.js'
+import Team from '../script/server/team.js'
 
 export default {
     data: function() {
         return {
-            team_players: ServerMock.getTeamPlayers(),
-            market_players: ServerMock.getMarketPlayers(),
-            login: false
+            team_players: [],
+            market_players: [],
+            team: {
+                name: '',
+                money: '',
+                arena: {}
+            }
         }
     },
     methods: {
@@ -88,6 +93,13 @@ export default {
 
     },
     mounted: function() {
+
+        Team.getTeamInfo((res) => {
+            if (res.type !== 'danger') {
+                this.team = res.data;
+                this.team_players = res.data.playerList;
+            }
+        });
 
         $.goup({
             trigger: 100,

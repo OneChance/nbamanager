@@ -9,7 +9,7 @@
 
         <div class="contract">
             <div>
-                <h3><b>${{player.money}}</b></h3>
+                <h3><b>${{player.sal}}</b></h3>
             </div>
             <div>
                 <div class="btn-group btn-group-sm" role="group" aria-label="...">
@@ -38,17 +38,17 @@
                                 <th>REB</th>
                             </tr>
                             <tr>
-                                <td>{{player.today.min}}</td>
-                                <td>{{player.today.fg}}</td>
-                                <td>{{player.today.p3}}</td>
-                                <td>{{player.today.ft}}</td>
-                                <td>{{player.today.oreb}}</td>
-                                <td>{{player.today.dreb}}</td>
-                                <td>{{player.today.reb}}</td>
+                                <td>{{today.min}}</td>
+                                <td>{{today.fg}}</td>
+                                <td>{{today.p3}}</td>
+                                <td>{{today.ft}}</td>
+                                <td>{{today.oreb}}</td>
+                                <td>{{today.dreb}}</td>
+                                <td>{{today.reb}}</td>
                             </tr>
                             <tr>
                                 <th>AST</th>
-                                <th>ST</th>
+                                <th>STL</th>
                                 <th>BLK</th>
                                 <th>TO</th>
                                 <th>PF</th>
@@ -56,13 +56,13 @@
                                 <th>EFF</th>
                             </tr>
                             <tr>
-                                <td>{{player.today.ast}}</td>
-                                <td>{{player.today.st}}</td>
-                                <td>{{player.today.blk}}</td>
-                                <td>{{player.today.to}}</td>
-                                <td>{{player.today.pf}}</td>
-                                <td>{{player.today.pts}}</td>
-                                <td><b>{{player.today.eff}}</b></td>
+                                <td>{{today.ast}}</td>
+                                <td>{{today.stl}}</td>
+                                <td>{{today.blk}}</td>
+                                <td>{{today.to}}</td>
+                                <td>{{today.pf}}</td>
+                                <td>{{today.pts}}</td>
+                                <td><b>{{today.ev}}</b></td>
                             </tr>
                         </tbody>
                     </table>
@@ -78,12 +78,14 @@
 <script>
 import ServerMock from '../script/server-mock.js'
 import PlayerLatestGames from './PlayerLatestGames.vue'
+import Statistic from '../script/server/statistic.js'
 
 export default {
     props: ['player', 'index'],
     data: function() {
         return {
-            img: require("../style/images/player/" + this.player.img + ".jpg")
+            img: require("../style/images/player/" + this.player.id + ".jpg"),
+            today: {}
         }
     },
     methods: {
@@ -96,10 +98,19 @@ export default {
     },
     updated: function() {
         this.$nextTick(function() {
-            this.img = require("../style/images/player/" + this.player.img + ".jpg")
+            this.img = require("../style/images/player/" + this.player.id + ".jpg")
         });
     },
     mounted: function() {
+
+        $(this.$el).find('.collapse').on('shown.bs.collapse', () => {
+            Statistic.getGameToday(this.player.id, (res) => {
+                if (res.data) {
+                    this.today = res.data;
+                }
+            });
+        });
+
         $(this.$el).find("img").on('click', (e) => {
             $('.collapse').collapse('hide');
             $(this.$el).find('.collapse').collapse('toggle');

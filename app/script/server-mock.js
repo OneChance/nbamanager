@@ -6,10 +6,7 @@ export default {
     onepage: 3,
 
     getTeamPlayers: function() {
-        return this.team_players = players.splice(0, 4).map(player => {
-            player.inTeam = true;
-            return player;
-        });
+
     },
     getMarketPlayers: function() {
         var toAdd = players.splice(0, this.onepage).map(player => {

@@ -18,6 +18,8 @@
 
 <script>
 import toastr from '../plugin/toastr/toastr.min'
+import Account from '../script/server/account.js'
+import GlobalVue from '../script/globalVue.js'
 
 export default {
     data: function() {
@@ -45,11 +47,16 @@ export default {
     },
     mounted: function() {
         $("#login-btn").on('click', (e) => {
-            if (this.name === '123' && this.password === '123') {
-                this.$router.push('index')
-            } else {
-                toastr.error('Account Error!');
-            }
+            Account.login({
+                name: this.name,
+                password: this.password
+            }, (res) => {
+                if (res.type === 'danger') {
+                    toastr.error(res.content);
+                } else if (res.type === 'success') {
+                    GlobalVue.instance.$router.push('index')
+                }
+            });
             return false;
         });
     }
