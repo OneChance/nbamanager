@@ -21,11 +21,11 @@
 
         <div class="collapse statistic" id="collapseExample">
             <ul class="nav nav-pills" id="statistic">
-                <li role="presentation" class="active"><a :href="'#'+player.img+'-today'">Today</a></li>
-                <li role="presentation"><a :href="'#'+player.img+'-latest-games'">Latest Games</a></li>
+                <li role="presentation" class="active"><a :href="'#'+player.id+'-today'">Today</a></li>
+                <li role="presentation"><a :href="'#'+player.id+'-latest-games'">Latest Games</a></li>
             </ul>
             <div class="tab-content player-statistic">
-                <div role="tabpanel" class="tab-pane active" :id="player.img+'-today'">
+                <div role="tabpanel" class="tab-pane active" :id="player.id+'-today'">
                     <table class="table table-bordered table-striped table-hover today-info">
                         <tbody>
                             <tr>
@@ -67,8 +67,8 @@
                         </tbody>
                     </table>
                 </div>
-                <div role="tabpanel" class="tab-pane" :id="player.img+'-latest-games'">
-                    <player-latest-games v-bind:playerImg="player.img" v-bind:latestGames="player.latestGames"></player-latest-games>
+                <div role="tabpanel" class="tab-pane" :id="player.id+'-latest-games'">
+                    <player-latest-games v-bind:playerId="player.id" v-bind:latest="latest"></player-latest-games>
                 </div>
             </div>
         </div>
@@ -85,7 +85,8 @@ export default {
     data: function() {
         return {
             img: require("../style/images/player/" + this.player.id + ".jpg"),
-            today: {}
+            today: {},
+            latest: {}
         }
     },
     methods: {
@@ -102,11 +103,24 @@ export default {
         });
     },
     mounted: function() {
-
         $(this.$el).find('.collapse').on('shown.bs.collapse', () => {
-            Statistic.getGameToday(this.player.id, (res) => {
+            Statistic.getStatistic(this.player.id, (res) => {
                 if (res.data) {
-                    this.today = res.data;
+                    if (res.data.today) {
+                        this.today = res.data.today;
+                    }
+                    if (res.data.latest) {
+                        let latestChartData = {
+                            labels: [],
+                            evs: []
+                        }
+                        let latest = res.data.latest;
+                        for (let key in latest) {
+                            latestChartData.labels.push(key);
+                            latestChartData.evs.push(latest[key]);
+                        }
+                        this.latest = latestChartData;
+                    }
                 }
             });
         });

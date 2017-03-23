@@ -43,9 +43,9 @@
                         <div class="row search">
                             <div class="col-lg-12">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search for...">
+                                    <input type="text" class="form-control" v-model="searchName" placeholder="Search for...">
                                     <span class="input-group-btn">
-                                      <button class="btn btn-primary" type="button">Go!</button>
+                                      <button class="btn btn-primary" type="button" id="goSearch">Go!</button>
                                     </span>
                                 </div>
                             </div>
@@ -73,6 +73,7 @@
 import PlayerListComponent from './PlayerList.vue'
 import ServerMock from '../script/server-mock.js'
 import Team from '../script/server/team.js'
+import Market from '../script/server/market.js'
 
 export default {
     data: function() {
@@ -83,7 +84,14 @@ export default {
                 name: '',
                 money: '',
                 arena: {}
-            }
+            },
+            page: 0,
+            searchName: ''
+        }
+    },
+    watch: {
+        searchName: (val, oldVal) => {
+
         }
     },
     methods: {
@@ -97,7 +105,10 @@ export default {
         Team.getTeamInfo((res) => {
             if (res.type !== 'danger') {
                 this.team = res.data;
-                this.team_players = res.data.playerList;
+                this.team_players = res.data.playerList.map(player => {
+                    player.inTeam = true;
+                    return player;
+                });
             }
         });
 
@@ -109,19 +120,40 @@ export default {
             titleAsText: true
         });
 
-        let indexComponent = this;
-
         $('#infos a').click(function(e) {
             e.preventDefault();
             $(this).tab('show');
         });
 
+        $('#infos a').on('shown.bs.tab', (e) => {
+            if (e.target.hash === '#market') {
+                Market.getMarketPlayer(0, (res) => {
+                    if (res.data) {
+                        this.market_players = res.data;
+                    }
+                }, this.searchName);
+            }
+        })
+
+        let vueComponent = this;
+
         $(".get-more").on('click', function(e) {
             var $btn = $(this).button('loading');
-            setTimeout(function() {
-                indexComponent.market_players = ServerMock.getMarketPlayers();
+            vueComponent.page++;
+            Market.getMarketPlayer(vueComponent.page, (res) => {
+                if (res.data) {
+                    vueComponent.market_players = [...vueComponent.market_players, ...res.data];
+                }
                 $btn.button('reset');
-            }, 1000);
+            }, vueComponent.searchName);
+        });
+
+        $("#goSearch").on('click', (e) => {
+            Market.getMarketPlayer(0, (res) => {
+                if (res.data) {
+                    this.market_players = res.data;
+                }
+            }, this.searchName);
         });
     },
     components: {
@@ -132,7 +164,11 @@ export default {
 
 <style scoped>
 .search {
-    margin: 10px;
+    margin: 10px 0;
+}
+
+.search .col-lg-12 {
+    padding: 0;
 }
 
 .team-info {

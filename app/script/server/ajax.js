@@ -32,9 +32,15 @@ let ajaxReq = function(apiUrl, data, type, callback) {
     }
 
     if (data) {
-        Object.assign(options, {
-            data: JSON.stringify(data)
-        });
+        var dataPass = {
+            data: data
+        };
+        if (type === 'post') {
+            dataPass = {
+                data: JSON.stringify(data)
+            }
+        }
+        Object.assign(options, dataPass);
     }
 
     $.ajax(options);
