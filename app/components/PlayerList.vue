@@ -1,38 +1,47 @@
 <template id="player_list">
-<transition-group name="li-list" tag="ul" class="list-group">
-    <player-component class="li-list-item" v-for="(player,index) in players" v-bind:player="player" v-bind:index="index" v-bind:key="player"></player-component>
+<transition-group :name="'li-list-'+direction" tag="ul" class="list-group">
+    <player-component class="li-list-item" v-on:signed="signed" v-bind:teamSize="teamSize" v-for="(player,index) in players" v-bind:player="player" v-bind:index="index" v-bind:key="player"></player-component>
 </transition-group>
 </template>
 <script>
 import PlayerComponent from './Player.vue'
 
 export default {
-    props: ['players'],
+    props: ['players', 'teamSize', 'direction'],
     components: {
         PlayerComponent
+    },
+    methods: {
+        signed: function(playerId) {
+            this.$emit('signed', playerId)
+        }
     }
 }
 </script>
 <style scoped>
-.li-list-enter-active {
-    transition: all .5s ease;
+.li-list-left-enter-active,
+.li-list-right-enter-active {
+    transition: all .8s ease;
 }
 
-.li-list-leave-active {
-    transition: all .5s ease;
+.li-list-left-leave-active,
+.li-list-right-leave-active {
+    transition: all .8s ease;
 }
 
-.li-list-enter,
-.li-list-leave-active {
-    transform: translateX(500px);
+.li-list-left-enter,
+.li-list-left-leave-active {
+    transform: scale(0);
     opacity: 0;
 }
 
-.li-list-leave-active {
-    position: absolute;
+.li-list-right-enter,
+.li-list-right-leave-active {
+    transform: scale(0);
+    opacity: 0;
 }
 
-.li-list-item {
+.li-list-left-item {
     transition: all 1s;
 }
 </style>

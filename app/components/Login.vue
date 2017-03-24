@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import toastr from '../plugin/toastr/toastr.min'
+import Toastr from '../plugin/toastr/toastr.min'
 import Account from '../script/server/account.js'
 import GlobalVue from '../script/globalVue.js'
 
@@ -52,7 +52,7 @@ export default {
                 password: this.password
             }, (res) => {
                 if (res.type === 'danger') {
-                    toastr.error(res.content);
+                    Toastr.error(res.content);
                 } else if (res.type === 'success') {
                     GlobalVue.instance.$router.push('index')
                 }

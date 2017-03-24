@@ -1,10 +1,13 @@
 <template id="player">
 <li class="list-group-item player-card">
     <div class="player_info">
-        <img :src="img" />
+        <img :src="img" class="clickImg" />
         <div class="info">
             <h4 class="player-name">{{player.name}}</h4>
-            <h2 class="player-pos"><b>{{player.pos}}</b></h2>
+            <select class="form-control" v-if="player.inTeam" :id="player.playerId+'-pos'">
+              <option v-for="pos in multiPos" :text="pos">{{pos}}</option>
+            </select>
+            <h2 v-if="!player.inTeam" class="player-pos"><b>{{player.pos}}</b></h2>
         </div>
 
         <div class="contract">
@@ -13,8 +16,8 @@
             </div>
             <div>
                 <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                    <button v-if="player.inTeam" type="button" class="btn btn-danger" @click="breakContract">Break</button>
-                    <button v-if="!player.inTeam" type="button" class="btn btn-success" @click="signContract">Sign</button>
+                    <button v-if="player.inTeam" type="button" class="btn btn-danger" @click="breakPlayer" data-toggle="modal" :data-target="'#'+player.playerId+'-sign-modal'">Break</button>
+                    <button v-if="!player.inTeam&&teamSize<5" type="button" class="btn btn-success" data-toggle="modal" :data-target="'#'+player.playerId+'-sign-modal'">Sign</button>
                 </div>
             </div>
         </div>
@@ -73,38 +76,79 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" :id="player.playerId+'-sign-modal'" tabindex="-1" role="dialog" aria-labelledby="signModal">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title" id="mySmallModalLabel">{{this.player.name}}</h4>
+                </div>
+                <div class="modal-body">
+                    <select class="form-control" :id="player.playerId+'-team-pos'">
+                      <option v-for="pos in multiPos" :text="pos">{{pos}}</option>
+                    </select>
+                    <h4>以<b>${{player.sal}}</b>签约此球员？</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">&nbsp;否&nbsp;</button>
+                    <button type="button" class="btn btn-success btn-sm" @click="signPlayer">&nbsp;是&nbsp;</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </li>
 </template>
 <script>
 import ServerMock from '../script/server-mock.js'
 import PlayerLatestGames from './PlayerLatestGames.vue'
 import Statistic from '../script/server/statistic.js'
+import Team from '../script/server/team.js'
+import Toastr from '../plugin/toastr/toastr.min'
 
 export default {
-    props: ['player', 'index'],
+    props: ['player', 'index', 'teamSize'],
     data: function() {
         return {
-            img: require("../style/images/player/" + this.player.id + ".jpg"),
+            img: require("../style/images/player/" + this.player.playerId + ".jpg"),
             today: {},
             latest: {}
         }
     },
+    computed: {
+        multiPos: function() {
+            let pos = this.player.ablePos || this.player.pos;
+            return pos.split("/");
+        }
+    },
     methods: {
-        breakContract: function() {
-            ServerMock.breakContract(this.index);
+        breakPlayer: function() {
+
         },
-        signContract: function() {
-            ServerMock.signContract(this.index);
+        signPlayer: function() {
+            $("#" + this.player.playerId + "-sign-modal").modal('hide');
+            this.$emit('signed', this.player.id);
+
+            /*Team.signPlayer({
+                id: this.player.playerId,
+                pos: $("#" + this.player.playerId + "-team-pos").val()
+            }, (res) => {
+                if (res.type === 'danger') {
+                    Toastr.error(res.content)
+                } else if (res.type === 'success') {
+                    this.$emit('signed',this.playerId)
+                }
+            })*/
         }
     },
     updated: function() {
         this.$nextTick(function() {
-            this.img = require("../style/images/player/" + this.player.id + ".jpg")
+            this.img = require("../style/images/player/" + this.player.playerId + ".jpg")
         });
     },
     mounted: function() {
         $(this.$el).find('.collapse').on('shown.bs.collapse', () => {
-            Statistic.getStatistic(this.player.id, (res) => {
+            Statistic.getStatistic(this.player.playerId, (res) => {
                 if (res.data) {
                     if (res.data.today) {
                         this.today = res.data.today;
@@ -134,6 +178,10 @@ export default {
             $(this).tab('show');
             return false;
         });
+
+        if (this.multiPos.length > 1) {
+            $("#" + this.player.playerId + "-pos").find("option[text=" + this.player.pos + "]").attr("selected", true);
+        }
     },
     components: {
         PlayerLatestGames
@@ -141,7 +189,7 @@ export default {
 }
 </script>
 <style scoped>
-.player_info>img {
+.player_info>.clickImg {
     width: 100px;
     height: 100px;
     border: 5px solid #2c3e50;
@@ -159,10 +207,6 @@ export default {
     text-align: center;
     display: inline-block;
     float: right;
-}
-
-.player-card {
-    z-index: 100;
 }
 
 .statistic {

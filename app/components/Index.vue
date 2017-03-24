@@ -5,8 +5,8 @@
     </div>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-6">
-                <player-list-component v-bind:players="team_players" v:bind:more=false></player-list-component>
+            <div class="col-md-6 team-player-list">
+                <player-list-component v-bind:direction="'left'" v-bind:players="team_players" v:bind:more=false></player-list-component>
             </div>
             <div class="col-md-6">
                 <ul class="nav nav-pills" id="infos">
@@ -51,7 +51,7 @@
                             </div>
                         </div>
                         <ul class="list-group">
-                            <player-list-component v-bind:players="market_players"></player-list-component>
+                            <player-list-component v-on:signed="signed" v-bind:direction="'right'" v-bind:players="market_players" v-bind:teamSize="team_players.length"></player-list-component>
                             <button type="button" class="btn btn-success btn-lg btn-block get-more">More</button>
                         </ul>
                     </div>
@@ -95,7 +95,13 @@ export default {
         }
     },
     methods: {
-
+        signed: function(playerId) {
+            let signedIndex = this.market_players.findIndex(p => p.playerId === playerId);
+            let signedPlayer = this.market_players[signedIndex];
+            signedPlayer.inTeam = true;
+            this.team_players.push(signedPlayer);
+            this.market_players.splice(signedIndex, 1);
+        }
     },
     created: function() {
 
@@ -105,7 +111,7 @@ export default {
         Team.getTeamInfo((res) => {
             if (res.type !== 'danger') {
                 this.team = res.data;
-                this.team_players = res.data.playerList.map(player => {
+                this.team_players = res.data.players.map(player => {
                     player.inTeam = true;
                     return player;
                 });
@@ -132,6 +138,8 @@ export default {
                         this.market_players = res.data;
                     }
                 }, this.searchName);
+            } else {
+                this.market_players = [];
             }
         })
 
@@ -174,4 +182,6 @@ export default {
 .team-info {
     margin-top: 10px;
 }
+
+.team-player-list {}
 </style>
