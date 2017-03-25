@@ -6,7 +6,9 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-6 team-player-list">
-                <player-list-component v-bind:direction="'left'" v-bind:players="team_players" v:bind:more=false></player-list-component>
+                <player-list-component v-on:breaked="breaked" v-on:poschanged="poschanged" v-bind:players="team_players" v:bind:more=false></player-list-component>
+                <div v-if="team_players.length<5" class="alert alert-warning" role="alert">{{ "team_not_full" | msg }}</div>
+                <div v-if="somePosEmpty" class="alert alert-warning" role="alert">{{ "some_pos_empty" | msg }}</div>
             </div>
             <div class="col-md-6">
                 <ul class="nav nav-pills" id="infos">
@@ -28,14 +30,6 @@
                                     <th>Money</th>
                                     <td>{{team.money}}</td>
                                 </tr>
-                                <tr>
-                                    <th>Arena</th>
-                                    <td>{{team.arena.name}}</td>
-                                </tr>
-                                <tr>
-                                    <th>Capacity</th>
-                                    <td>{{team.arena.cap}}</td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -51,7 +45,7 @@
                             </div>
                         </div>
                         <ul class="list-group">
-                            <player-list-component v-on:signed="signed" v-bind:direction="'right'" v-bind:players="market_players" v-bind:teamSize="team_players.length"></player-list-component>
+                            <player-list-component v-on:signed="signed" v-bind:players="market_players" v-bind:teamSize="team_players.length"></player-list-component>
                             <button type="button" class="btn btn-success btn-lg btn-block get-more">More</button>
                         </ul>
                     </div>
@@ -74,6 +68,7 @@ import PlayerListComponent from './PlayerList.vue'
 import ServerMock from '../script/server-mock.js'
 import Team from '../script/server/team.js'
 import Market from '../script/server/market.js'
+import Message from '../script/message.js'
 
 export default {
     data: function() {
@@ -86,7 +81,8 @@ export default {
                 arena: {}
             },
             page: 0,
-            searchName: ''
+            searchName: '',
+            somePosEmpty: false
         }
     },
     watch: {
@@ -95,12 +91,23 @@ export default {
         }
     },
     methods: {
-        signed: function(playerId) {
+        signed: function(playerId, pos) {
             let signedIndex = this.market_players.findIndex(p => p.playerId === playerId);
             let signedPlayer = this.market_players[signedIndex];
             signedPlayer.inTeam = true;
+            signedPlayer.ablePos = signedPlayer.pos; //先将球员的可打位置保存
+            signedPlayer.pos = pos; //pos用于下拉框默认选中当前所打位置
             this.team_players.push(signedPlayer);
             this.market_players.splice(signedIndex, 1);
+        },
+        breaked: function(playerId) {
+            let breakedIndex = this.team_players.findIndex(p => p.playerId === playerId);
+            this.team_players.splice(breakedIndex, 1);
+        },
+        poschanged: function() {
+            this.somePosEmpty = this.team_players.some(p => {
+                return p.pos === Message.filters('pos_empty')
+            });
         }
     },
     created: function() {
@@ -115,6 +122,7 @@ export default {
                     player.inTeam = true;
                     return player;
                 });
+                this.poschanged();
             }
         });
 
@@ -166,6 +174,9 @@ export default {
     },
     components: {
         PlayerListComponent
+    },
+    filters: {
+        msg: Message.filters
     }
 }
 </script>
@@ -182,6 +193,4 @@ export default {
 .team-info {
     margin-top: 10px;
 }
-
-.team-player-list {}
 </style>

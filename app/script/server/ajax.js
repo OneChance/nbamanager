@@ -22,6 +22,7 @@ let ajaxReq = function(apiUrl, data, type, callback) {
         dataType: "json",
         success: function(res) {
             if (res && res.content === 'login_status_error') {
+                $(".modal-backdrop").remove()
                 GlobalVue.instance.$router.push('login')
             } else {
                 if (callback) {

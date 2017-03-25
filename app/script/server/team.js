@@ -6,5 +6,11 @@ export default {
     },
     signPlayer: function(data, callback) {
         Ajax.post('/signPlayer/', data, callback);
+    },
+    breakPlayer: function(data, callback) {
+        Ajax.post('/breakPlayer/', data, callback);
+    },
+    changePlayerPos: function(data, callback) {
+        Ajax.post('/changePlayerPos/', data, callback);
     }
 }

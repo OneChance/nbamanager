@@ -4,7 +4,8 @@
         <img :src="img" class="clickImg" />
         <div class="info">
             <h4 class="player-name">{{player.name}}</h4>
-            <select class="form-control" v-if="player.inTeam" :id="player.playerId+'-pos'">
+            <select class="form-control" v-if="player.inTeam" :id="player.playerId+'-pos'" v-model="player.pos">
+              <option :text="'pos_empty' | msg">{{ 'pos_empty' | msg }}</option>
               <option v-for="pos in multiPos" :text="pos">{{pos}}</option>
             </select>
             <h2 v-if="!player.inTeam" class="player-pos"><b>{{player.pos}}</b></h2>
@@ -16,7 +17,7 @@
             </div>
             <div>
                 <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                    <button v-if="player.inTeam" type="button" class="btn btn-danger" @click="breakPlayer" data-toggle="modal" :data-target="'#'+player.playerId+'-sign-modal'">Break</button>
+                    <button v-if="player.inTeam" type="button" class="btn btn-danger" data-toggle="modal" :data-target="'#'+player.playerId+'-break-modal'">Break</button>
                     <button v-if="!player.inTeam&&teamSize<5" type="button" class="btn btn-success" data-toggle="modal" :data-target="'#'+player.playerId+'-sign-modal'">Sign</button>
                 </div>
             </div>
@@ -77,7 +78,8 @@
         </div>
     </div>
 
-    <div class="modal fade" :id="player.playerId+'-sign-modal'" tabindex="-1" role="dialog" aria-labelledby="signModal">
+    <!--sign modal-->
+    <div class="modal" :id="player.playerId+'-sign-modal'" tabindex="-1" role="dialog" aria-labelledby="signModal">
         <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -97,6 +99,25 @@
             </div>
         </div>
     </div>
+
+    <!--break modal-->
+    <div class="modal" :id="player.playerId+'-break-modal'" tabindex="-1" role="dialog" aria-labelledby="breakModal">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title" id="mySmallModalLabel">{{this.player.name}}</h4>
+                </div>
+                <div class="modal-body">
+                    <h4>与此球员解约？</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">&nbsp;否&nbsp;</button>
+                    <button type="button" class="btn btn-success btn-sm" @click="breakPlayer">&nbsp;是&nbsp;</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </li>
 </template>
 <script>
@@ -105,6 +126,7 @@ import PlayerLatestGames from './PlayerLatestGames.vue'
 import Statistic from '../script/server/statistic.js'
 import Team from '../script/server/team.js'
 import Toastr from '../plugin/toastr/toastr.min'
+import Message from '../script/message.js'
 
 export default {
     props: ['player', 'index', 'teamSize'],
@@ -112,7 +134,8 @@ export default {
         return {
             img: require("../style/images/player/" + this.player.playerId + ".jpg"),
             today: {},
-            latest: {}
+            latest: {},
+            prePos: this.player.pos //记录改变之前的位置,用于改变位置操作失败后的恢复
         }
     },
     computed: {
@@ -123,22 +146,29 @@ export default {
     },
     methods: {
         breakPlayer: function() {
-
+            Team.breakPlayer({
+                id: this.player.playerId
+            }, (res) => {
+                if (res.type === 'danger') {
+                    Toastr.error(Message.filters(res.content))
+                } else if (res.type === 'success') {
+                    $("#" + this.player.playerId + "-break-modal").modal('hide');
+                    this.$emit('breaked', this.player.playerId);
+                }
+            })
         },
         signPlayer: function() {
-            $("#" + this.player.playerId + "-sign-modal").modal('hide');
-            this.$emit('signed', this.player.id);
-
-            /*Team.signPlayer({
+            Team.signPlayer({
                 id: this.player.playerId,
                 pos: $("#" + this.player.playerId + "-team-pos").val()
             }, (res) => {
                 if (res.type === 'danger') {
-                    Toastr.error(res.content)
+                    Toastr.error(Message.filters(res.content))
                 } else if (res.type === 'success') {
-                    this.$emit('signed',this.playerId)
+                    $("#" + this.player.playerId + "-sign-modal").modal('hide');
+                    this.$emit('signed', this.player.playerId, $("#" + this.player.playerId + "-team-pos").val());
                 }
-            })*/
+            })
         }
     },
     updated: function() {
@@ -147,6 +177,9 @@ export default {
         });
     },
     mounted: function() {
+
+        let vueComponent = this;
+
         $(this.$el).find('.collapse').on('shown.bs.collapse', () => {
             Statistic.getStatistic(this.player.playerId, (res) => {
                 if (res.data) {
@@ -179,12 +212,27 @@ export default {
             return false;
         });
 
-        if (this.multiPos.length > 1) {
-            $("#" + this.player.playerId + "-pos").find("option[text=" + this.player.pos + "]").attr("selected", true);
-        }
+        $("#" + this.player.playerId + "-pos").on("change", function() {
+            Team.changePlayerPos({
+                id: vueComponent.player.playerId,
+                pos: $(this).val()
+            }, (res) => {
+                if (res.type === 'danger') {
+                    $(this).val(vueComponent.prePos)
+                    Toastr.error(Message.filters("change_player_pos_error") + ":" + Message.filters(res.content));
+                } else {
+                    vueComponent.prePos = $(this).val()
+                    Toastr.success(Message.filters("change_player_pos_success"));
+                    vueComponent.$emit('poschanged');
+                }
+            })
+        })
     },
     components: {
         PlayerLatestGames
+    },
+    filters: {
+        msg: Message.filters
     }
 }
 </script>
