@@ -2,16 +2,16 @@
 <div class="login-screen">
     <div class="login-form">
         <div class="control-group">
-            <input type="text" class="form-control" v-model="name" placeholder="Enter your name">
+            <input type="text" class="form-control" v-model="name" :placeholder=" 'your_name' | msg ">
             <label class="login-field-icon fui-man-16" for="login-name"></label>
         </div>
 
         <div class="control-group">
-            <input type="password" class="form-control" v-model="password" placeholder="Password">
+            <input type="password" class="form-control" v-model="password" :placeholder=" 'password' | msg ">
             <label class="login-field-icon fui-lock-16" for="login-pass"></label>
         </div>
 
-        <button type="button" class="btn btn-primary btn-large btn-block" id="login-btn" disabled="disabled">Login</button>
+        <button type="button" class="btn btn-primary btn-large btn-block" id="login-btn" disabled="disabled">{{ 'login' | msg }}</button>
     </div>
 </div>
 </template>
@@ -20,6 +20,7 @@
 import Toastr from '../plugin/toastr/toastr.min'
 import Account from '../script/server/account.js'
 import GlobalVue from '../script/globalVue.js'
+import Message from '../script/message.js'
 
 export default {
     data: function() {
@@ -59,6 +60,9 @@ export default {
             });
             return false;
         });
+    },
+    filters: {
+        msg: Message.filters
     }
 }
 </script>

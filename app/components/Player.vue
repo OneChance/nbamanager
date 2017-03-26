@@ -17,8 +17,8 @@
             </div>
             <div>
                 <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                    <button v-if="player.inTeam" type="button" class="btn btn-danger" data-toggle="modal" :data-target="'#'+player.playerId+'-break-modal'">Break</button>
-                    <button v-if="!player.inTeam&&teamSize<5" type="button" class="btn btn-success" data-toggle="modal" :data-target="'#'+player.playerId+'-sign-modal'">Sign</button>
+                    <button v-if="player.inTeam" type="button" class="btn btn-danger" data-toggle="modal" :data-target="'#'+player.playerId+'-break-modal'">{{ 'break_player' | msg }}</button>
+                    <button v-if="!player.inTeam&&teamSize<5" type="button" class="btn btn-success" data-toggle="modal" :data-target="'#'+player.playerId+'-sign-modal'">{{ 'sign_player' | msg }}</button>
                 </div>
             </div>
         </div>
@@ -90,11 +90,11 @@
                     <select class="form-control" :id="player.playerId+'-team-pos'">
                       <option v-for="pos in multiPos" :text="pos">{{pos}}</option>
                     </select>
-                    <h4>以<b>${{player.sal}}</b>签约此球员？</h4>
+                    <h4>以<b>${{player.sal}}</b>{{ 'confirm_sign' | msg }}？</h4>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">&nbsp;否&nbsp;</button>
-                    <button type="button" class="btn btn-success btn-sm" @click="signPlayer">&nbsp;是&nbsp;</button>
+                    <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">&nbsp;{{ 'confirm_no' | msg }}&nbsp;</button>
+                    <button type="button" class="btn btn-success btn-sm" @click="signPlayer">&nbsp;{{ 'confirm_yes' | msg }}&nbsp;</button>
                 </div>
             </div>
         </div>
@@ -109,7 +109,7 @@
                     <h4 class="modal-title" id="mySmallModalLabel">{{this.player.name}}</h4>
                 </div>
                 <div class="modal-body">
-                    <h4>与此球员解约？</h4>
+                    <h4>{{ 'confirm_break' | msg }}？</h4>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">&nbsp;否&nbsp;</button>

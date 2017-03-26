@@ -1,7 +1,7 @@
 <template id="index">
 <div id="frame">
     <div class="jumbotron">
-        <h1>NBA Manager</h1>
+        <h1><b>{{ 'title' | msg }}</b></h1>
     </div>
     <div class="container-fluid">
         <div class="row">
@@ -12,9 +12,9 @@
             </div>
             <div class="col-md-6">
                 <ul class="nav nav-pills" id="infos">
-                    <li role="presentation" class="active"><a href="#team">Team</a></li>
-                    <li role="presentation"><a href="#market">Market</a></li>
-                    <li role="presentation"><a href="#sign_log">Sign Log</a></li>
+                    <li role="presentation" class="active"><a href="#team">{{ 'team_info' | msg }}</a></li>
+                    <li role="presentation"><a href="#market">{{ 'player_market' | msg }}</a></li>
+                    <li role="presentation"><a href="#contract_log">{{ 'sign_log' | msg }}</a></li>
                 </ul>
 
                 <!-- Tab panes -->
@@ -23,11 +23,11 @@
                         <table class="table table-bordered table-striped table-hover team-info">
                             <tbody>
                                 <tr>
-                                    <th>TeamName</th>
+                                    <th>{{ 'team_name' | msg }}</th>
                                     <td>{{team.name}}</td>
                                 </tr>
                                 <tr>
-                                    <th>Money</th>
+                                    <th>{{ 'team_money' | msg }}</th>
                                     <td>{{team.money}}</td>
                                 </tr>
                             </tbody>
@@ -37,22 +37,21 @@
                         <div class="row search">
                             <div class="col-lg-12">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" v-model="searchName" placeholder="Search for...">
+                                    <input type="text" class="form-control" v-model="searchName" :placeholder=" 'search_player' | msg ">
                                     <span class="input-group-btn">
-                                      <button class="btn btn-primary" type="button" id="goSearch">Go!</button>
+                                      <button class="btn btn-primary" type="button" id="goSearch">{{ 'search' |  msg }}</button>
                                     </span>
                                 </div>
                             </div>
                         </div>
                         <ul class="list-group">
                             <player-list-component v-on:signed="signed" v-bind:players="market_players" v-bind:teamSize="team_players.length"></player-list-component>
-                            <button type="button" class="btn btn-success btn-lg btn-block get-more">More</button>
+                            <button v-if="moreData" type="button" class="btn btn-success btn-lg btn-block get-more">More</button>
                         </ul>
                     </div>
-                    <div role="tabpanel" class="tab-pane" id="sign_log">
+                    <div role="tabpanel" class="tab-pane" id="contract_log">
                         <ul class="list-group">
-                            <li class="list-group-item">asdfasdfasdf</li>
-                            <li class="list-group-item">Dapibus ac facilisis in</li>
+                            <li class="list-group-item" v-for="log in contract_logs">{{log.date}}&nbsp;<b>${{log.money}}</b>{{(log.type==='sign'?'sign_player':'break_player')|msg}}&nbsp;<b>{{log.playerName}}</b></li>
                         </ul>
                     </div>
                 </div>
@@ -75,6 +74,7 @@ export default {
         return {
             team_players: [],
             market_players: [],
+            contract_logs: [],
             team: {
                 name: '',
                 money: '',
@@ -82,7 +82,8 @@ export default {
             },
             page: 0,
             searchName: '',
-            somePosEmpty: false
+            somePosEmpty: false,
+            moreData: true
         }
     },
     watch: {
@@ -108,6 +109,13 @@ export default {
             this.somePosEmpty = this.team_players.some(p => {
                 return p.pos === Message.filters('pos_empty')
             });
+        },
+        checkMore: function(queryList) {
+            if (queryList.length < 10) {
+                this.moreData = false
+            } else {
+                this.moreData = true
+            }
         }
     },
     created: function() {
@@ -143,11 +151,22 @@ export default {
             if (e.target.hash === '#market') {
                 Market.getMarketPlayer(0, (res) => {
                     if (res.data) {
-                        this.market_players = res.data;
+                        this.market_players = res.data
+                        this.checkMore(res.data)
                     }
                 }, this.searchName);
             } else {
                 this.market_players = [];
+            }
+
+            if (e.target.hash === '#contract_log') {
+                Team.getContractLog(0, (res) => {
+                    if (res.data) {
+                        this.contract_logs = res.data
+                    }
+                });
+            } else {
+                this.contract_logs = [];
             }
         })
 
@@ -159,6 +178,7 @@ export default {
             Market.getMarketPlayer(vueComponent.page, (res) => {
                 if (res.data) {
                     vueComponent.market_players = [...vueComponent.market_players, ...res.data];
+                    vueComponent.checkMore(res.data)
                 }
                 $btn.button('reset');
             }, vueComponent.searchName);
@@ -168,6 +188,7 @@ export default {
             Market.getMarketPlayer(0, (res) => {
                 if (res.data) {
                     this.market_players = res.data;
+                    this.checkMore(res.data)
                 }
             }, this.searchName);
         });
@@ -182,7 +203,8 @@ export default {
 </script>
 
 <style scoped>
-.search {
+.search,
+#contract_log {
     margin: 10px 0;
 }
 
