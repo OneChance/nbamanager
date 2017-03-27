@@ -63,8 +63,8 @@
                                 <td>{{today.ast}}</td>
                                 <td>{{today.stl}}</td>
                                 <td>{{today.blk}}</td>
-                                <td>{{today.to}}</td>
-                                <td>{{today.pf}}</td>
+                                <td>{{today.fa}}</td>
+                                <td>{{today.fo}}</td>
                                 <td>{{today.pts}}</td>
                                 <td><b>{{today.ev}}</b></td>
                             </tr>
