@@ -37,9 +37,9 @@
                         <div class="row search">
                             <div class="col-lg-12">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" v-model="searchName" :placeholder=" 'search_player' | msg ">
+                                    <input type="text" class="form-control search-input" v-model="searchName" :placeholder=" 'search_player' | msg ">
                                     <span class="input-group-btn">
-                                      <button class="btn btn-primary" type="button" id="goSearch">{{ 'search' |  msg }}</button>
+                                      <button class="btn" type="button" id="goSearch"><span class="fui-search"></span></button>
                                     </span>
                                 </div>
                             </div>
@@ -224,5 +224,10 @@ export default {
 
 .team-info {
     margin-top: 10px;
+}
+
+.search-input:focus+span>#goSearch {
+    border-color: #1aba9c;
+    color: #1aba9c
 }
 </style>

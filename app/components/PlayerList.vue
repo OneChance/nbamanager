@@ -25,6 +25,10 @@ export default {
 }
 </script>
 <style scoped>
+.list-group-item {
+    padding: 15px 15px;
+}
+
 .li-list-enter-active {
     transition: all .5s ease;
 }

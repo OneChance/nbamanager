@@ -4,7 +4,7 @@
         <img :src="img" class="clickImg" />
         <div class="info">
             <h4 class="player-name">{{player.name}}</h4>
-            <select class="form-control" v-if="player.inTeam" :id="player.playerId+'-pos'" v-model="player.pos">
+            <select class="form-control select select-primary mrs mbm" v-if="player.inTeam" :id="player.playerId+'-pos'" v-model="player.pos">
               <option :text="'pos_empty' | msg">{{ 'pos_empty' | msg }}</option>
               <option v-for="pos in multiPos" :text="pos">{{pos}}</option>
             </select>
@@ -87,7 +87,7 @@
                     <h4 class="modal-title" id="mySmallModalLabel">{{this.player.name}}</h4>
                 </div>
                 <div class="modal-body">
-                    <select class="form-control" :id="player.playerId+'-team-pos'">
+                    <select class="form-control select select-primary mrs mbm" :id="player.playerId+'-team-pos'">
                       <option v-for="pos in multiPos" :text="pos">{{pos}}</option>
                     </select>
                     <h4>以<b>${{player.sal}}</b>{{ 'confirm_sign' | msg }}？</h4>
@@ -227,6 +227,10 @@ export default {
                 }
             })
         })
+
+        $(this.$el).find(".select").select2({
+            dropdownCssClass: 'select-inverse-dropdown'
+        });
     },
     components: {
         PlayerLatestGames
@@ -243,6 +247,13 @@ export default {
     border: 5px solid #2c3e50;
     border-radius: 100px;
     cursor: pointer;
+}
+
+@media ( max-width :320px) {
+    .player_info>.clickImg {
+        width: 60px;
+        height: 60px;
+    }
 }
 
 .player_info .info {

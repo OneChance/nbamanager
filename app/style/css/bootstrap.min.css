@@ -1257,6 +1257,18 @@ p {
     }
 }
 
+@media ( max-width :414px) {
+    h2, h3, h4 {
+        font-size: 90%
+    }
+}
+
+@media ( max-width :320px) {
+    h2, h3, h4 {
+        font-size: 50%
+    }
+}
+
 small, .small {
     font-size: 86%
 }
