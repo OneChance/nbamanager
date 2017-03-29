@@ -51,7 +51,7 @@
                     </div>
                     <div role="tabpanel" class="tab-pane" id="contract_log">
                         <ul class="list-group">
-                            <li class="list-group-item" v-for="log in contract_logs">{{log.date}}&nbsp;<b>${{log.money}}</b>{{(log.type==='sign'?'sign_player':'break_player')|msg}}&nbsp;<b>{{log.playerName}}</b></li>
+                            <li class="list-group-item" v-for="log in contract_logs">{{log.date}}&nbsp;<b>${{log.money}}</b>&nbsp;{{(log.type==='sign'?'sign_player':'break_player')|msg}}&nbsp;<b>{{log.playerName}}</b></li>
                         </ul>
                     </div>
                 </div>
@@ -103,7 +103,17 @@ export default {
         },
         breaked: function(playerId) {
             let breakedIndex = this.team_players.findIndex(p => p.playerId === playerId);
-            this.team_players.splice(breakedIndex, 1);
+            let breakedPlayer = this.team_players.splice(breakedIndex, 1)[0];
+            let date = new Date();
+            let now = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+            let log = {
+                date: now,
+                money: breakedPlayer.sal,
+                type: 'break_player',
+                playerName: breakedPlayer.name
+            }
+
+            this.contract_logs.push(log)
         },
         poschanged: function() {
             this.somePosEmpty = this.team_players.some(p => {

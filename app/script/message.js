@@ -5,7 +5,7 @@ export default {
 }
 
 let msgs = {
-    title: "NBA篮球经理",
+    title: "NBA经理",
     team_info: "球队信息",
     team_name: "名称",
     team_money: "资金",
