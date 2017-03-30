@@ -44,12 +44,36 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="checkbox primary" for="checkboxC">
+                            <input type="checkbox" name="searchPos" data-toggle="checkbox" checked="checked" :value="'pos_c'|msg" id="checkboxC" v-model="searchPos">
+                            <b>{{ 'pos_c' | msg }}</b>
+                          </label>
+                            <label class="checkbox primary" for="checkboxF">
+                            <input type="checkbox" name="searchPos" data-toggle="checkbox" checked="checked" :value="'pos_f'|msg" id="checkboxF" v-model="searchPos">
+                            <b>{{ 'pos_f' | msg }}</b>
+                          </label>
+                            <label class="checkbox primary" for="checkboxG">
+                            <input type="checkbox" name="searchPos" data-toggle="checkbox" checked="checked" :value="'pos_g'|msg" id="checkboxG" v-model="searchPos">
+                            <b>{{ 'pos_g' | msg }}</b>
+                          </label>
+                        </div>
                         <ul class="list-group">
                             <player-list-component v-on:signed="signed" v-bind:players="market_players" v-bind:teamSize="team_players.length"></player-list-component>
                             <button v-if="moreData" type="button" class="btn btn-success btn-lg btn-block get-more">More</button>
                         </ul>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="contract_log">
+                        <div class="row search">
+                            <div class="col-lg-12">
+                                <div class="input-group">
+                                    <input type="text" class="form-control search-input" v-model="searchNameContract" :placeholder=" 'search_player' | msg ">
+                                    <span class="input-group-btn">
+                                    <button class="btn" type="button" id="goSearchContract"><span class="fui-search"></span></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
                         <ul class="list-group">
                             <li class="list-group-item" v-for="log in contract_logs">{{log.date}}&nbsp;<b>${{log.money}}</b>&nbsp;{{(log.type==='sign'?'sign_player':'break_player')|msg}}&nbsp;<b>{{log.playerName}}</b></li>
                         </ul>
@@ -82,6 +106,8 @@ export default {
             },
             page: 0,
             searchName: '',
+            searchPos: [Message.filters('pos_c'), Message.filters('pos_f'), Message.filters('pos_g')],
+            searchNameContract: '',
             somePosEmpty: false,
             moreData: true
         }
@@ -159,12 +185,13 @@ export default {
 
         $('#infos a').on('shown.bs.tab', (e) => {
             if (e.target.hash === '#market') {
+                console.log(this.searchName.toString());
                 Market.getMarketPlayer(0, (res) => {
                     if (res.data) {
                         this.market_players = res.data
                         this.checkMore(res.data)
                     }
-                }, this.searchName);
+                }, this.searchName, this.searchPos.toString());
             } else {
                 this.market_players = [];
             }
@@ -174,7 +201,7 @@ export default {
                     if (res.data) {
                         this.contract_logs = res.data
                     }
-                });
+                }, this.searchNameContract);
             } else {
                 this.contract_logs = [];
             }
@@ -191,7 +218,7 @@ export default {
                     vueComponent.checkMore(res.data)
                 }
                 $btn.button('reset');
-            }, vueComponent.searchName);
+            }, vueComponent.searchName, vueComponent.searchPos.toString());
         });
 
         $("#goSearch").on('click', (e) => {
@@ -200,8 +227,18 @@ export default {
                     this.market_players = res.data;
                     this.checkMore(res.data)
                 }
-            }, this.searchName);
+            }, this.searchName, this.searchPos.toString());
         });
+
+        $("#goSearchContract").on('click', (e) => {
+            Team.getContractLog(0, (res) => {
+                if (res.data) {
+                    this.contract_logs = res.data
+                }
+            }, this.searchNameContract);
+        });
+
+        $(this.$el).find('[data-toggle="checkbox"]').radiocheck();
     },
     components: {
         PlayerListComponent
@@ -229,5 +266,15 @@ export default {
 .search-input:focus+span>#goSearch {
     border-color: #1aba9c;
     color: #1aba9c
+}
+
+.search-input:focus+span>#goSearchContract {
+    border-color: #1aba9c;
+    color: #1aba9c
+}
+
+.checkbox {
+    display: inline-block;
+    margin-left: 10px;
 }
 </style>

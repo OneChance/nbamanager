@@ -28,5 +28,8 @@ let msgs = {
     pos_empty: "未分配",
     login: "进入",
     your_name: "身份",
-    password: "口令"
+    password: "口令",
+    pos_c: "中锋",
+    pos_f: "前锋",
+    pos_g: "后卫"
 }

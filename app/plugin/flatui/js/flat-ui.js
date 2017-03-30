@@ -11888,7 +11888,7 @@ function(global, $) {
 
             // Adding 'nohover' class for mobile devices
 
-            var mobile = /mobile|tablet|phone|ip(ad|od)|android|silk|webos/i.test(global.navigator.userAgent);
+            var mobile = /mobile|tablet|phone|ip(ad|od)|android|silk|webos/i.test(navigator.userAgent);
 
             if (mobile === true) {
                 $this.parent().hover(function() {

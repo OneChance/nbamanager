@@ -13,7 +13,9 @@ export default {
     changePlayerPos: function(data, callback) {
         Ajax.post('/changePlayerPos/', data, callback);
     },
-    getContractLog: function(page, callback) {
-        Ajax.get('/getContractLog/' + page + '/', null, callback);
+    getContractLog: function(page, callback, searchName) {
+        Ajax.get('/getContractLog/' + page + '/', {
+            'searchName': searchName
+        }, callback);
     }
 }
