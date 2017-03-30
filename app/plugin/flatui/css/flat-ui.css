@@ -411,6 +411,13 @@ body {
     background-color: #ffffff;
 }
 
+@media (max-width: 414px) {
+  body {
+      font-size: 10px;
+  }
+}
+
+
 a {
     color: #16a085;
     text-decoration: none;

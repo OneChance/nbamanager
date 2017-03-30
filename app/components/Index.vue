@@ -6,7 +6,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-6 team-player-list">
-                <player-list-component v-on:breaked="breaked" v-on:poschanged="poschanged" v-bind:players="team_players" v:bind:more=false></player-list-component>
+                <player-list-component v-on:breaked="breaked" v-on:poschanged="poschanged" v-bind:players="team_players" v-bind:tradeOpen="tradeOpen"></player-list-component>
                 <div v-if="team_players.length<5" class="alert alert-warning" role="alert">{{ "team_not_full" | msg }}</div>
                 <div v-if="somePosEmpty" class="alert alert-warning" role="alert">{{ "some_pos_empty" | msg }}</div>
             </div>
@@ -32,36 +32,46 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <button v-if="moreData" type="button" class="btn btn-inverse btn-lg btn-block log-out">{{'log_out'|msg}}</button>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="market">
-                        <div class="row search">
-                            <div class="col-lg-12">
-                                <div class="input-group">
-                                    <input type="text" class="form-control search-input" v-model="searchName" :placeholder=" 'search_player' | msg ">
-                                    <span class="input-group-btn">
+                        <div v-if="tradeOpen">
+                            <div class="row search">
+                                <div class="col-lg-12">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control search-input" v-model="searchName" :placeholder=" 'search_player' | msg ">
+                                        <span class="input-group-btn">
                                       <button class="btn" type="button" id="goSearch"><span class="fui-search"></span></button>
-                                    </span>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="checkbox primary" for="checkboxC">
+                            <div class="form-group">
+                                <label class="checkbox primary" for="checkboxC">
                             <input type="checkbox" name="searchPos" data-toggle="checkbox" checked="checked" :value="'pos_c'|msg" id="checkboxC" v-model="searchPos">
                             <b>{{ 'pos_c' | msg }}</b>
                           </label>
-                            <label class="checkbox primary" for="checkboxF">
+                                <label class="checkbox primary" for="checkboxF">
                             <input type="checkbox" name="searchPos" data-toggle="checkbox" checked="checked" :value="'pos_f'|msg" id="checkboxF" v-model="searchPos">
                             <b>{{ 'pos_f' | msg }}</b>
                           </label>
-                            <label class="checkbox primary" for="checkboxG">
+                                <label class="checkbox primary" for="checkboxG">
                             <input type="checkbox" name="searchPos" data-toggle="checkbox" checked="checked" :value="'pos_g'|msg" id="checkboxG" v-model="searchPos">
                             <b>{{ 'pos_g' | msg }}</b>
                           </label>
+                            </div>
+                            <ul class="list-group">
+                                <player-list-component v-on:signed="signed" v-bind:players="market_players" v-bind:teamSize="team_players.length"></player-list-component>
+                                <button v-if="moreData" type="button" class="btn btn-success btn-lg btn-block get-more">{{'more_player'|msg}}</button>
+                            </ul>
                         </div>
-                        <ul class="list-group">
-                            <player-list-component v-on:signed="signed" v-bind:players="market_players" v-bind:teamSize="team_players.length"></player-list-component>
-                            <button v-if="moreData" type="button" class="btn btn-success btn-lg btn-block get-more">More</button>
-                        </ul>
+                        <div v-if="!tradeOpen">
+                            <div class="alert alert-warning trade_wait" role="alert">{{ "trade_wait" | msg }}
+                                <div class="timer">
+                                    <span class="hours"></span>:<span class="minutes"></span>:<span class="seconds"></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="contract_log">
                         <div class="row search">
@@ -88,7 +98,6 @@
 
 <script>
 import PlayerListComponent from './PlayerList.vue'
-import ServerMock from '../script/server-mock.js'
 import Team from '../script/server/team.js'
 import Market from '../script/server/market.js'
 import Message from '../script/message.js'
@@ -109,7 +118,8 @@ export default {
             searchPos: [Message.filters('pos_c'), Message.filters('pos_f'), Message.filters('pos_g')],
             searchNameContract: '',
             somePosEmpty: false,
-            moreData: true
+            moreData: true,
+            tradeOpen: false
         }
     },
     watch: {
@@ -185,7 +195,6 @@ export default {
 
         $('#infos a').on('shown.bs.tab', (e) => {
             if (e.target.hash === '#market') {
-                console.log(this.searchName.toString());
                 Market.getMarketPlayer(0, (res) => {
                     if (res.data) {
                         this.market_players = res.data
@@ -238,7 +247,37 @@ export default {
             }, this.searchNameContract);
         });
 
-        $(this.$el).find('[data-toggle="checkbox"]').radiocheck();
+        //计时器
+        var now = new Date();
+        if (now.getHours() < 15) {
+            var openTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 15, 0, 0);
+            var count = Math.max((openTime.getTime() - now.getTime()), 0);
+            console.log(count);
+            $('.timer').countdown(count + now.valueOf(), function(event) {
+                var $this = $(this);
+                switch (event.type) {
+                    case "seconds":
+                    case "minutes":
+                    case "hours":
+                    case "days":
+                    case "weeks":
+                    case "daysLeft":
+                        $this.find('span.' + event.type).html(event.value);
+                        break;
+                    case "finished":
+                        vueComponent.tradeOpen = true;
+                        break;
+                }
+            });
+        } else {
+            this.tradeOpen = true;
+        }
+    },
+    updated: function() {
+        //多选框
+        this.$nextTick(function() {
+            $(this.$el).find('[data-toggle="checkbox"]').radiocheck();
+        });
     },
     components: {
         PlayerListComponent
@@ -247,6 +286,9 @@ export default {
         msg: Message.filters
     }
 }
+
+require('../plugin/countdown/css/style.css');
+require('../plugin/countdown/js/jquery.countdown.js');
 </script>
 
 <style scoped>
@@ -276,5 +318,13 @@ export default {
 .checkbox {
     display: inline-block;
     margin-left: 10px;
+}
+
+.jumbotron h1 {
+    display: inline-block;
+}
+
+.trade_wait {
+    margin-top: 10px;
 }
 </style>

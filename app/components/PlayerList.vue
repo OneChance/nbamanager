@@ -1,13 +1,13 @@
 <template id="player_list">
 <transition-group name="li-list" tag="ul" class="list-group">
-    <player-component class="li-list-item" v-on:signed="signed" v-on:breaked="breaked" v-on:poschanged="poschanged" v-bind:teamSize="teamSize" v-for="(player,index) in players" v-bind:player="player" v-bind:index="index" v-bind:key="player"></player-component>
+    <player-component class="li-list-item" v-on:signed="signed" v-on:breaked="breaked" v-on:poschanged="poschanged" v-bind:teamSize="teamSize" v-for="(player,index) in players" v-bind:player="player" v-bind:index="index" v-bind:key="player" v-bind:tradeOpen="tradeOpen"></player-component>
 </transition-group>
 </template>
 <script>
 import PlayerComponent from './Player.vue'
 
 export default {
-    props: ['players', 'teamSize'],
+    props: ['players', 'teamSize', 'tradeOpen'],
     components: {
         PlayerComponent
     },
