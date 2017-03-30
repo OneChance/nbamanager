@@ -11,6 +11,9 @@ export default {
             const routes = [{
                     path: '/login',
                     component: Login
+                }, {
+                    path: '/',
+                    component: Login
                 },
                 {
                     path: '/index',

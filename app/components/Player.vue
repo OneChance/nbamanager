@@ -18,7 +18,7 @@
             <div>
                 <div class="btn-group btn-group-sm" role="group" aria-label="...">
                     <button v-if="player.inTeam && tradeOpen" type="button" class="btn btn-danger" data-toggle="modal" :data-target="'#'+player.playerId+'-break-modal'">{{ 'break_player' | msg }}</button>
-                    <button v-if="!player.inTeam&&teamSize<5" type="button" class="btn btn-success" data-toggle="modal" :data-target="'#'+player.playerId+'-sign-modal'">{{ 'sign_player' | msg }}</button>
+                    <button v-if="!player.inTeam" type="button" class="btn btn-success" data-toggle="modal" :data-target="'#'+player.playerId+'-sign-modal'">{{ 'sign_player' | msg }}</button>
                 </div>
             </div>
         </div>
