@@ -6,10 +6,11 @@ export default {
 
 let msgs = {
     title: "NBA经理",
-    team_info: "球队信息",
-    team_name: "名称",
+    team_name: "球队名称",
     team_money: "资金",
     player_market: "球员市场",
+    team_info:"球队信息",
+    team_players:"球员列表",
     sign_log: "合约日志",
     search: "搜索",
     search_player: "搜索球员",

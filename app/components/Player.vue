@@ -17,8 +17,8 @@
             </div>
             <div>
                 <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                    <button v-if="player.inTeam && tradeOpen" type="button" class="btn btn-danger" data-toggle="modal" :data-target="'#'+player.playerId+'-break-modal'">{{ 'break_player' | msg }}</button>
-                    <button v-if="!player.inTeam" type="button" class="btn btn-success" data-toggle="modal" :data-target="'#'+player.playerId+'-sign-modal'">{{ 'sign_player' | msg }}</button>
+                    <button v-if="player.inTeam && tradeAble" type="button" class="btn btn-danger" data-toggle="modal" :data-target="'#'+player.playerId+'-break-modal'">{{ 'break_player' | msg }}</button>
+                    <button v-if="!player.inTeam && tradeAble" type="button" class="btn btn-success" data-toggle="modal" :data-target="'#'+player.playerId+'-sign-modal'">{{ 'sign_player' | msg }}</button>
                 </div>
             </div>
         </div>
@@ -128,7 +128,7 @@ import Toastr from '../plugin/toastr/toastr.min'
 import Message from '../script/message.js'
 
 export default {
-    props: ['player', 'index', 'teamSize', 'tradeOpen'],
+    props: ['player', 'index', 'tradeAble'],
     data: function() {
         return {
             img: require("../style/images/player/" + this.player.playerId + ".jpg"),
@@ -216,6 +216,7 @@ export default {
                     Toastr.error(Message.filters("change_player_pos_error") + ":" + Message.filters(res.content));
                 } else {
                     vueComponent.prePos = $(this).val()
+                    vueComponent.player.pos = $(this).val()
                     Toastr.success(Message.filters("change_player_pos_success"));
                     vueComponent.$emit('poschanged');
                 }

@@ -11,7 +11,7 @@
                 </div>
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group pos-filter">
             <label class="checkbox primary" for="checkboxC">
                 <input type="checkbox" name="searchPos" data-toggle="checkbox" checked="checked" :value="'pos_c'|msg" id="checkboxC" v-model="searchPos">
                 <b>{{ 'pos_c' | msg }}</b>
@@ -27,7 +27,7 @@
         </div>
         <ul class="list-group">
             <transition-group name="li-list" tag="ul" class="list-group">
-                <player-component class="li-list-item" v-on:signed="signed" v-for="(player,index) in marketPlayers" v-bind:player="player" v-bind:index="index" v-bind:key="player" v-bind:tradeOpen="tradeOpen"></player-component>
+                <player-component class="li-list-item" v-on:signed="signed" v-for="(player,index) in marketPlayers" v-bind:player="player" v-bind:index="index" v-bind:key="player" v-bind:tradeAble="tradeAble"></player-component>
             </transition-group>
             <button v-if="moreData" type="button" class="btn btn-success btn-lg btn-block more-player" @click="morePlayer">{{'more_player'|msg}}</button>
         </ul>
@@ -42,10 +42,10 @@
 </div>
 </template>
 <script>
-require('../style/css/list-transition.css');
 import PlayerComponent from './Player.vue'
 import Market from '../script/server/market.js'
 import Message from '../script/message.js'
+import Hub from '../script/hub.js'
 
 export default {
     data: function() {
@@ -55,7 +55,8 @@ export default {
             searchName: '',
             searchPos: [Message.filters('pos_c'), Message.filters('pos_f'), Message.filters('pos_g')],
             moreData: true,
-            tradeOpen: false
+            tradeOpen: false,
+            tradeAble: true
         }
     },
     methods: {
@@ -77,7 +78,7 @@ export default {
             signedPlayer.ablePos = signedPlayer.pos; //先将球员的可打位置保存
             signedPlayer.pos = pos; //pos用于下拉框默认选中当前所打位置
             this.marketPlayers.splice(signedIndex, 1)
-            this.$emit('signed', signedPlayer) //继续往父组件传递签约的球员,让父组建通知球队列表更新
+            Hub.eventHub.$emit('player-signed', signedPlayer)
         },
         checkMore: function(queryList) {
             if (queryList.length < 10) {
@@ -99,10 +100,23 @@ export default {
         }
     },
     mounted: function() {
+
+        Hub.eventHub.$on('team_players_size_change', (teamPlayersSize) => {
+            if (teamPlayersSize >= 5) {
+                this.tradeAble = false;
+            } else {
+                this.tradeAble = true;
+            }
+        })
+
+        Hub.eventHub.$emit('trade-open', this.tradeOpen)
+
+        this.searchPlayer();
+
         //计时器
         var now = new Date();
         if (now.getHours() < 15) {
-            var openTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 15, 0, 0);
+            var openTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 43, 0);
             var count = Math.max((openTime.getTime() - now.getTime()), 0);
             $('.timer').countdown(count + now.valueOf(), (event) => {
                 var $this = $(this.$el);
@@ -117,6 +131,7 @@ export default {
                         break;
                     case "finished":
                         this.tradeOpen = true;
+                        Hub.eventHub.$emit('trade-open', this.tradeOpen)
                         break;
                 }
             });
@@ -143,6 +158,10 @@ require('../plugin/countdown/js/jquery.countdown.js');
 <style scoped>
 .search {
     margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.pos-filter {
     margin-bottom: 10px;
 }
 
