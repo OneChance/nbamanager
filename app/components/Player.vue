@@ -17,8 +17,12 @@
             </div>
             <div>
                 <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                    <button v-if="player.inTeam && tradeAble" type="button" class="btn btn-danger" data-toggle="modal" :data-target="'#'+player.playerId+'-break-modal'">{{ 'break_player' | msg }}</button>
-                    <button v-if="!player.inTeam && tradeAble" type="button" class="btn btn-success" data-toggle="modal" :data-target="'#'+player.playerId+'-sign-modal'">{{ 'sign_player' | msg }}</button>
+                    <transition name="fade">
+                        <button v-if="player.inTeam && tradeAble" type="button" class="btn btn-danger" data-toggle="modal" :data-target="'#'+player.playerId+'-break-modal'">{{ 'break_player' | msg }}</button>
+                    </transition>
+                    <transition name="fade">
+                        <button v-if="!player.inTeam && tradeAble" type="button" class="btn btn-success" data-toggle="modal" :data-target="'#'+player.playerId+'-sign-modal'">{{ 'sign_player' | msg }}</button>
+                    </transition>
                 </div>
             </div>
         </div>
@@ -283,5 +287,23 @@ td {
 
 .contract h3 {
     margin-top: 10px;
+}
+
+.fade-enter-active {
+    transition: all .5s ease;
+}
+
+.fade-leave-active {
+    transition: all .5s ease;
+}
+
+.fade-enter,
+.fade-leave-active {
+    transform: scale(0);
+    opacity: 0;
+}
+
+.fade-leave-active {
+    opacity: 0;
 }
 </style>
