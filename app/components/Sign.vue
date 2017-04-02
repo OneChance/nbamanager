@@ -11,7 +11,9 @@
             <label class="login-field-icon fui-lock-16" for="login-pass"></label>
         </div>
 
-        <button type="button" class="btn btn-primary btn-large btn-block" id="login-btn" disabled="disabled">{{ 'login' | msg }}</button>
+        <button type="button" class="btn btn-primary btn-large btn-block sign-in-btn" disabled="disabled" @click="signIn">{{ 'sign_in' | msg }}</button>
+
+        <input type="checkbox" checked data-toggle="switch" data-on-color="success" data-off-color="primary" id="sign_type" />
     </div>
 </div>
 </template>
@@ -40,25 +42,38 @@ export default {
     methods: {
         checkInput: function() {
             if (this.password && this.name) {
-                $("#login-btn").removeAttr("disabled");
+                $(".sign-in-btn").removeAttr("disabled");
             } else {
-                $("#login-btn").attr("disabled", "disabled");
+                $(".sign-in-btn").attr("disabled", "disabled");
+            }
+        },
+        signIn: function() {
+            if ($("#sign_type").is(":checked")) {
+                Account.signIn({
+                    name: this.name,
+                    password: this.password
+                }, this.signCallback);
+            } else {
+                Account.signUp({
+                    name: this.name,
+                    password: this.password
+                }, this.signCallback)
+            }
+            return false;
+        },
+        signCallback: function(res) {
+            if (res.type === 'danger') {
+                Toastr.error(Message.filters(res.content));
+            } else if (res.type === 'success') {
+                GlobalVue.instance.$router.push('index')
             }
         }
     },
     mounted: function() {
-        $("#login-btn").on('click', (e) => {
-            Account.login({
-                name: this.name,
-                password: this.password
-            }, (res) => {
-                if (res.type === 'danger') {
-                    Toastr.error(res.content);
-                } else if (res.type === 'success') {
-                    GlobalVue.instance.$router.push('index')
-                }
-            });
-            return false;
+        Account.checkLogin();
+        $(this.$el).find('[data-toggle="switch"]').bootstrapSwitch({
+            onText: Message.filters("sign_in_switch"),
+            offText: Message.filters("sign_up_switch"),
         });
     },
     filters: {
@@ -80,5 +95,10 @@ export default {
     background-color: #eceff1;
     border-radius: 6px;
     padding: 10px 10px;
+    text-align: center;
+}
+
+.sign-in-btn {
+    margin-bottom: 10px;
 }
 </style>

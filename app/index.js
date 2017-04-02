@@ -2,13 +2,7 @@ import GlobalVue from './script/globalVue.js'
 import Account from './script/server/account.js'
 
 window.onload = function() {
-
     GlobalVue.initApp().$mount('#app');
-
-    Account.isLogin((res) => {
-        GlobalVue.instance.$router.push('index');
-    })
-
 }
 
 require('./style/css/bootstrap.min.css');

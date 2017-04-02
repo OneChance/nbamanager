@@ -28,6 +28,7 @@
                     </tr>
                 </tbody>
             </table>
+            <button type="button" class="btn btn-inverse btn-lg btn-block sign-out-btn" @click="signOut">{{'sign_out'|msg}}</button>
         </div>
         <div role="tabpanel" class="tab-pane" id="contract_log">
             <contract-log-component ref="contracts"></contract-log-component>
@@ -37,10 +38,12 @@
 </template>
 <script>
 import PlayerComponent from './Player.vue'
+import Account from '../script/server/account.js'
 import ContractLogComponent from './ContractLog.vue'
 import Team from '../script/server/team.js'
 import Message from '../script/message.js'
 import Hub from '../script/hub.js'
+import GlobalVue from '../script/globalVue.js'
 
 export default {
     data: function() {
@@ -74,6 +77,11 @@ export default {
                 return p.pos === Message.filters('pos_empty')
             });
         },
+        signOut: function() {
+            Account.signOut((res) => {
+                GlobalVue.instance.$router.push('sign');
+            })
+        }
     },
     mounted: function() {
 
@@ -153,5 +161,9 @@ export default {
 
 .li-list-move {
     transition: transform .5s;
+}
+
+.sign-out-btn {
+    maring-top: 10px
 }
 </style>

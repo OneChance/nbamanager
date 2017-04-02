@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Login from '../components/Login.vue'
-import Index from '../components/Index.vue'
+import SignComponent from '../components/Sign.vue'
+import IndexComponent from '../components/Index.vue'
 
 export default {
     instance: null,
@@ -9,15 +9,15 @@ export default {
         if (!this.instance) {
             Vue.use(VueRouter)
             const routes = [{
-                    path: '/login',
-                    component: Login
+                    path: '/sign',
+                    component: SignComponent
                 }, {
                     path: '/',
-                    component: Login
+                    component: SignComponent
                 },
                 {
                     path: '/index',
-                    component: Index
+                    component: IndexComponent
                 }
             ]
             const router = new VueRouter({
