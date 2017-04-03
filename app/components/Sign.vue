@@ -2,19 +2,20 @@
 <div class="login-screen">
     <div class="login-form">
         <div class="control-group">
-            <input type="text" class="form-control" v-model="name" :placeholder=" 'your_name' | msg ">
-            <label class="login-field-icon fui-man-16" for="login-name"></label>
+            <input type="text" class="form-control icon-input" v-model="name" :placeholder=" 'your_name' | msg " id="login-name">
+            <label class="login-field-icon fui-user" for="login-name"></label>
         </div>
 
         <div class="control-group">
-            <input type="password" class="form-control" v-model="password" :placeholder=" 'password' | msg ">
-            <label class="login-field-icon fui-lock-16" for="login-pass"></label>
+            <input type="password" class="form-control icon-input" v-model="password" :placeholder=" 'password' | msg " id="login-pass">
+            <label class="login-field-icon fui-lock" for="login-pass"></label>
         </div>
 
         <button type="button" class="btn btn-primary btn-large btn-block sign-in-btn" disabled="disabled" @click="signIn">{{ 'sign_in' | msg }}</button>
 
         <input type="checkbox" checked data-toggle="switch" data-on-color="success" data-off-color="primary" id="sign_type" />
     </div>
+    <!--<img src="../style/images/logo.png" />-->
 </div>
 </template>
 
@@ -98,7 +99,15 @@ export default {
     text-align: center;
 }
 
+.login-form .control-group {
+    margin-bottom: 10px;
+}
+
 .sign-in-btn {
     margin-bottom: 10px;
+}
+
+.icon-input:focus+label {
+    color: #1aba9c
 }
 </style>

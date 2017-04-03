@@ -17,5 +17,8 @@ export default {
         Ajax.get('/getContractLog/' + page + '/', {
             'searchName': searchName
         }, callback);
+    },
+    changeTeamName: function(data, callback) {
+        Ajax.post('/changeTeamName/', data, callback);
     }
 }

@@ -20,7 +20,12 @@
                 <tbody>
                     <tr>
                         <th>{{ 'team_name' | msg }}</th>
-                        <td>{{team.name}}</td>
+                        <td>
+                            <div class="control-group icon-wrapper">
+                                <input type="text" class="form-control" v-model="team.name" :placeholder=" 'team_name' | msg ">
+                                <label v-if="teamNameChangeable" class="fui-new field-icon click-icon" @click="changeTeamName"></label>
+                            </div>
+                        </td>
                     </tr>
                     <tr>
                         <th>{{ 'team_money' | msg }}</th>
@@ -44,18 +49,25 @@ import Team from '../script/server/team.js'
 import Message from '../script/message.js'
 import Hub from '../script/hub.js'
 import GlobalVue from '../script/globalVue.js'
+import Toastr from '../plugin/toastr/toastr.min'
 
 export default {
     data: function() {
         return {
             teamPlayers: [],
-            team: {
-                name: '',
-                money: '',
-                arena: {}
-            },
+            team: {},
             tradeAble: true,
             somePosEmpty: false,
+            teamNameChangeable: true
+        }
+    },
+    watch: {
+        "team.name": function(val, oldVal) {
+            if (val === '') {
+                this.teamNameChangeable = false
+            } else {
+                this.teamNameChangeable = true
+            }
         }
     },
     methods: {
@@ -80,6 +92,15 @@ export default {
         signOut: function() {
             Account.signOut((res) => {
                 GlobalVue.instance.$router.push('sign');
+            })
+        },
+        changeTeamName: function() {
+            Team.changeTeamName({
+                name: this.team.name
+            }, (res) => {
+                if (res.type === 'success') {
+                    Toastr.success(Message.filters('team_name_changed'))
+                }
             })
         }
     },
@@ -166,4 +187,5 @@ export default {
 .sign-out-btn {
     maring-top: 10px
 }
+</style>
 </style>

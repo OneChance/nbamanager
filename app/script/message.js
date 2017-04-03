@@ -58,5 +58,6 @@ let msgs = {
     sign_in_switch: "登陆",
     sign_up_switch: "注册",
     login_account_error: "账户信息错误",
-    account_invalid: "无效的账户"
+    account_invalid: "无效的账户",
+    team_name_changed: "球队名称已变更"
 }

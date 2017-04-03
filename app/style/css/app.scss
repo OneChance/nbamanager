@@ -1,13 +1,15 @@
-html,body,#app{
-  height: 100%;
+#app,
+body,
+html {
+    height: 100%;
 }
 
 .router-enter-active {
-    transition: all .3s ease;
+    transition: all 0.3s ease;
 }
 
 .router-leave-active {
-    transition: all .3s ease;
+    transition: all 0.3s ease;
 }
 
 .router-enter,
@@ -18,4 +20,28 @@ html,body,#app{
 .goup-container {
     z-index: 200;
     background: #2c3e50 !important;
+}
+
+.icon-wrapper {
+    position: relative;
+}
+
+.field-icon {
+    font-size: 16px;
+    position: absolute;
+    right: 15px;
+    top: 3px;
+    transition: 0.25s;
+}
+
+.click-icon {
+    cursor: pointer;
+}
+
+.click-icon:hover {
+    color: #1aba9c;
+}
+
+.table th {
+    vertical-align: middle !important;
 }
