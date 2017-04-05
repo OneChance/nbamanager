@@ -11,7 +11,8 @@ export default {
     }
 }
 
-let url = "http://localhost:8080";
+//let url = "http://localhost:8080";
+let url = "";
 let ajaxReq = function(apiUrl, data, type, callback) {
 
     let options = {
