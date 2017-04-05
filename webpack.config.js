@@ -58,7 +58,7 @@
          }), new webpack.ProvidePlugin({
              jQuery: "jquery",
              $: "jquery",
-             Chart:"chart.js"
+             Chart: "chart.js/dist/Chart.min.js"
          })
      ]
  };

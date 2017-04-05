@@ -7,11 +7,9 @@
     </ul>
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane" id="team_players">
-            <ul v-if="teamPlayers.length>0" class="list-group">
-                <transition-group name="li-list" tag="ul" class="list-group">
-                    <player-component class="li-list-item" v-on:poschanged="poschanged" v-on:breaked="breaked" v-for="(player,index) in teamPlayers" v-bind:player="player" v-bind:index="index" v-bind:key="player" v-bind:tradeAble="tradeAble"></player-component>
-                </transition-group>
-            </ul>
+            <transition-group name="li-list" tag="ul" class="list-group">
+                <player-component class="li-list-item" v-on:poschanged="poschanged" v-on:breaked="breaked" v-for="(player,index) in teamPlayers" v-bind:player="player" v-bind:index="index" v-bind:key="player" v-bind:tradeAble="tradeAble"></player-component>
+            </transition-group>
             <div v-if="teamPlayers.length<5" class="alert alert-warning" role="alert">{{ "team_not_full" | msg }}</div>
             <div v-if="somePosEmpty" class="alert alert-warning" role="alert">{{ "some_pos_empty" | msg }}</div>
         </div>
@@ -82,6 +80,7 @@ export default {
                 type: 'break_player',
                 playerName: breakedPlayer.name
             }
+            this.team.money = (this.team.money - 0) + (breakedPlayer.sal - 0)
             Hub.eventHub.$emit('team_players_size_change', this.teamPlayers.length)
         },
         poschanged: function() {
@@ -135,6 +134,7 @@ export default {
 
         Hub.eventHub.$on('player-signed', (signedPlayer) => {
             this.teamPlayers.push(signedPlayer)
+            this.team.money = this.team.money - signedPlayer.sal
             Hub.eventHub.$emit('team_players_size_change', this.teamPlayers.length)
         })
 
@@ -186,6 +186,10 @@ export default {
 
 .sign-out-btn {
     maring-top: 10px
+}
+
+#team_players .alert {
+    margin-top: -10px
 }
 </style>
 </style>

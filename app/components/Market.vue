@@ -111,8 +111,6 @@ export default {
             }
         })
 
-        Hub.eventHub.$emit('trade-open', this.tradeOpen)
-
         this.searchPlayer();
 
         //计时器
@@ -139,6 +137,7 @@ export default {
             });
         } else {
             this.tradeOpen = true;
+            Hub.eventHub.$emit('trade-open', this.tradeOpen)
         }
     },
     updated: function() {
