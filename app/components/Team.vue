@@ -7,7 +7,7 @@
     </ul>
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane" id="team_players">
-            <ul class="list-group">
+            <ul v-if="teamPlayers.length>0" class="list-group">
                 <transition-group name="li-list" tag="ul" class="list-group">
                     <player-component class="li-list-item" v-on:poschanged="poschanged" v-on:breaked="breaked" v-for="(player,index) in teamPlayers" v-bind:player="player" v-bind:index="index" v-bind:key="player" v-bind:tradeAble="tradeAble"></player-component>
                 </transition-group>
