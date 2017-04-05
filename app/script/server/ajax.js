@@ -1,7 +1,7 @@
 import GlobalVue from '../globalVue.js'
 import Toastr from '../../plugin/toastr/toastr.min'
 import Message from '../message.js'
-import BaseURL from './baseURL.js'
+import Env from './env.js'
 
 export default {
     post: function(apiUrl, data, callback) {
@@ -12,7 +12,7 @@ export default {
     }
 }
 
-let url = BaseURL.url;
+let url = Env.baseURL;
 let ajaxReq = function(apiUrl, data, type, callback) {
 
     let options = {
@@ -26,10 +26,10 @@ let ajaxReq = function(apiUrl, data, type, callback) {
         success: function(res) {
             if (res && res.content === 'login_status_error') {
                 $(".modal-backdrop").remove()
-                GlobalVue.instance.$router.push('sign')
                 if (location.hash === '#/index') {
                     Toastr.error(Message.filters('login_status_error'));
                 }
+                GlobalVue.instance.$router.push('sign')
             } else {
                 if (callback) {
                     callback(res);
