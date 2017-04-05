@@ -1,6 +1,7 @@
 import GlobalVue from '../globalVue.js'
 import Toastr from '../../plugin/toastr/toastr.min'
 import Message from '../message.js'
+import BaseURL from './baseURL.js'
 
 export default {
     post: function(apiUrl, data, callback) {
@@ -11,8 +12,7 @@ export default {
     }
 }
 
-//let url = "http://localhost:8080";
-let url = "";
+let url = BaseURL.url;
 let ajaxReq = function(apiUrl, data, type, callback) {
 
     let options = {
