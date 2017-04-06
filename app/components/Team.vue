@@ -185,7 +185,8 @@ export default {
 }
 
 .sign-out-btn {
-    maring-top: 10px
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 #team_players .alert {
