@@ -2,6 +2,7 @@
  var path = require('path');
  var HtmlWebpackPlugin = require('html-webpack-plugin')
  var webpack = require('webpack');
+ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
  module.exports = {
      entry: {
@@ -10,9 +11,9 @@
      // 输出配置
      output: {
          path: path.resolve(__dirname, 'dist'),
-         filename: '[name].[hash].js',
-         publicPath: '/',
-         chunkFilename: '[id].[chunkhash].js'
+         filename: '[name].[chunkhash].js',
+         publicPath: '',
+         chunkFilename: '[name].[chunkhash].js'
      },
      resolve: {
          extensions: ['', '.js', '.vue'],
@@ -33,10 +34,16 @@
              use: ['url-loader?limit=8192&name=images/[hash:8].[name].[ext]', 'image-webpack-loader']
          }, {
              test: /\.css$/,
-             use: ['style-loader', 'css-loader?importLoaders=1', 'postcss-loader']
+             use: ExtractTextPlugin.extract({
+                 fallback: 'style-loader',
+                 use: ['css-loader?importLoaders=1', 'postcss-loader']
+             })
          }, {
              test: /\.scss$/,
-             use: ['style-loader', 'css-loader?importLoaders=1', 'postcss-loader', 'sass-loader']
+             use: ExtractTextPlugin.extract({
+                 fallback: 'style-loader',
+                 use: ['css-loader?importLoaders=1', 'postcss-loader', 'sass-loader']
+             })
          }]
      },
      resolve: {
@@ -59,6 +66,15 @@
              jQuery: "jquery",
              $: "jquery",
              Chart: "chart.js/dist/Chart.min.js"
+         }), new webpack.optimize.CommonsChunkPlugin({
+             name: 'vendor',
+             minChunks: function(module) {
+                 return module.context && module.context.indexOf('node_modules') !== -1;
+             }
+         }), new webpack.optimize.CommonsChunkPlugin({
+             name: 'manifest'
+         }), new ExtractTextPlugin({
+             filename: 'style.[chunkhash].css'
          })
      ]
  };
