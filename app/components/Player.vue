@@ -195,9 +195,9 @@ export default {
                             evs: []
                         }
                         let latest = res.data.latest;
-                        for (let key in latest) {
-                            latestChartData.labels.push(key);
-                            latestChartData.evs.push(latest[key]);
+                        for (let oneGame of latest) {
+                            latestChartData.labels.push(oneGame.date);
+                            latestChartData.evs.push(oneGame.ev);
                         }
                         this.latest = latestChartData;
                     }
