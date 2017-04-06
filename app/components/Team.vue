@@ -27,7 +27,7 @@
                     </tr>
                     <tr>
                         <th>{{ 'team_money' | msg }}</th>
-                        <td>{{team.money}}</td>
+                        <td><b>${{team.money}}</b></td>
                     </tr>
                 </tbody>
             </table>
