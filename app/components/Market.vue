@@ -116,6 +116,7 @@ export default {
         //计时器
         var now = new Date();
         if (now.getHours() < 15) {
+            Hub.eventHub.$emit('trade-open', this.tradeOpen)
             var openTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 15, 0, 0);
             var count = Math.max((openTime.getTime() - now.getTime()), 0);
             $('.timer').countdown(count + now.valueOf(), (event) => {
