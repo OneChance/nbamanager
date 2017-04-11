@@ -4,16 +4,16 @@ import Message from '../message.js'
 import Env from './env.js'
 
 export default {
-    post: function(apiUrl, data, callback) {
-        ajaxReq(apiUrl, data, 'post', callback);
+    post: function(apiUrl, data, callback, serverErrorCallback) {
+        ajaxReq(apiUrl, data, 'post', callback, serverErrorCallback);
     },
-    get: function(apiUrl, data, callback) {
-        ajaxReq(apiUrl, data, 'get', callback);
+    get: function(apiUrl, data, callback, serverErrorCallback) {
+        ajaxReq(apiUrl, data, 'get', callback, serverErrorCallback);
     }
 }
 
 let url = Env.baseURL;
-let ajaxReq = function(apiUrl, data, type, callback) {
+let ajaxReq = function(apiUrl, data, type, callback, serverErrorCallback) {
 
     let options = {
         contentType: "application/json; charset=utf-8",
@@ -38,6 +38,9 @@ let ajaxReq = function(apiUrl, data, type, callback) {
         },
         error: function() {
             Toastr.error(Message.filters('server_error'));
+            if (serverErrorCallback) {
+                serverErrorCallback();
+            }
         }
     }
 

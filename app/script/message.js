@@ -60,5 +60,7 @@ let msgs = {
     login_account_error: "账户信息错误",
     account_invalid: "无效的账户",
     team_name_changed: "球队名称已变更",
-    not_enough_money: "球队资金不足"
+    not_enough_money: "球队资金不足",
+    signing: "进入中...",
+    loading: "加载中..."
 }

@@ -250,6 +250,7 @@ export default {
     border: 5px solid #2c3e50;
     border-radius: 100px;
     cursor: pointer;
+    background-color: #ecf0f1;
 }
 
 @media ( max-width :320px) {

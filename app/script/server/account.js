@@ -2,8 +2,8 @@ import Ajax from './ajax.js'
 import GlobalVue from '../globalVue.js'
 
 export default {
-    signIn: function(data, callback) {
-        Ajax.post('/signIn/', data, callback);
+    signIn: function(data, callback,serverErrorCallback) {
+        Ajax.post('/signIn/', data, callback,serverErrorCallback);
     },
     isLogin: function(callback) {
         Ajax.get('/isLogin/', "", callback);
@@ -23,7 +23,7 @@ export default {
             }
         })
     },
-    signUp: function(data, callback) {
-        Ajax.post('/signUp/', data, callback);
+    signUp: function(data, callback,serverErrorCallback) {
+        Ajax.post('/signUp/', data, callback,serverErrorCallback);
     }
 }

@@ -30,7 +30,7 @@
                 <transition-group name="li-list" tag="ul" class="list-group">
                     <player-component class="li-list-item" v-on:signed="signed" v-for="(player,index) in marketPlayers" v-bind:player="player" v-bind:index="index" v-bind:key="player" v-bind:tradeAble="tradeAble"></player-component>
                 </transition-group>
-                <button v-if="moreData" type="button" class="btn btn-success btn-lg btn-block more-player" @click="morePlayer">{{'more_player'|msg}}</button>
+                <button v-if="moreData" type="button" class="btn btn-success btn-lg btn-block more-player" :data-loading-text=" 'loading' | msg " @click="morePlayer">{{'more_player'|msg}}</button>
             </ul>
         </div>
     </transition>

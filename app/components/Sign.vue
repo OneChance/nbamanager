@@ -11,7 +11,7 @@
             <label class="login-field-icon fui-lock" for="login-pass"></label>
         </div>
 
-        <button type="button" class="btn btn-primary btn-large btn-block sign-in-btn" disabled="disabled" @click="signIn">{{ 'sign_in' | msg }}</button>
+        <button type="button" class="btn btn-primary btn-large btn-block sign-in-btn" :data-loading-text=" 'signing' | msg " disabled="disabled" @click="signIn">{{ 'sign_in' | msg }}</button>
 
         <input type="checkbox" checked data-toggle="switch" data-on-color="success" data-off-color="primary" id="sign_type" />
     </div>
@@ -49,25 +49,30 @@ export default {
             }
         },
         signIn: function() {
+            var $btn = $(this.$el).find(".sign-in-btn").button('loading');
             if ($("#sign_type").is(":checked")) {
                 Account.signIn({
                     name: this.name,
                     password: this.password
-                }, this.signCallback);
+                }, this.signCallback, this.serverErrorCallback);
             } else {
                 Account.signUp({
                     name: this.name,
                     password: this.password
-                }, this.signCallback)
+                }, this.signCallback, this.serverErrorCallback)
             }
             return false;
         },
         signCallback: function(res) {
             if (res.type === 'danger') {
+                $btn.button('reset');
                 Toastr.error(Message.filters(res.content));
             } else if (res.type === 'success') {
                 GlobalVue.instance.$router.push('index')
             }
+        },
+        serverErrorCallback: function() {
+            $(this.$el).find(".sign-in-btn").button('loading').button('reset');
         }
     },
     mounted: function() {
