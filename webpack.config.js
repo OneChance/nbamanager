@@ -31,7 +31,7 @@
              exclude: [path.resolve(__dirname, 'node_modules')]
          }, {
              test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
-             use: ['url-loader?limit=8192&name=images/[hash:8].[name].[ext]', 'image-webpack-loader']
+             use: ['url-loader?limit=1&name=images/[hash:8].[name].[ext]', 'image-webpack-loader']
          }, {
              test: /\.css$/,
              use: ExtractTextPlugin.extract({
@@ -49,7 +49,7 @@
      resolve: {
          extensions: [".js", ".css", ".scss"],
          alias: {
-             'vue': 'vue/dist/vue.js'
+             'vue': 'vue/dist/vue.min.js'
          }
      },
      devServer: {
@@ -63,8 +63,8 @@
              template: path.resolve(__dirname, 'app/index.html'),
              inject: true
          }), new webpack.ProvidePlugin({
-             jQuery: "jquery",
-             $: "jquery",
+             jQuery: "jquery/dist/jquery.min.js",
+             $: "jquery/dist/jquery.min.js",
              Chart: "chart.js/dist/Chart.min.js"
          }), new webpack.optimize.CommonsChunkPlugin({
              name: 'vendor',
@@ -75,6 +75,10 @@
              name: 'manifest'
          }), new ExtractTextPlugin({
              filename: 'style.[chunkhash].css'
+         }), new webpack.DefinePlugin({
+             'process.env': {
+                 NODE_ENV: '"production"'
+             }
          })
      ]
  };
