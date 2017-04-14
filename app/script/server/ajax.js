@@ -1,5 +1,5 @@
 import GlobalVue from '../globalVue.js'
-import Toastr from '../../plugin/toastr/toastr.min'
+import Toastr from '../../plugin/toastr/toastr.min.js'
 import Message from '../message.js'
 import Env from './env.js'
 

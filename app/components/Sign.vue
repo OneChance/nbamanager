@@ -49,7 +49,6 @@ export default {
             }
         },
         signIn: function() {
-            var $btn = $(this.$el).find(".sign-in-btn").button('loading');
             if ($("#sign_type").is(":checked")) {
                 Account.signIn({
                     name: this.name,
@@ -64,6 +63,7 @@ export default {
             return false;
         },
         signCallback: function(res) {
+            var $btn = $(this.$el).find(".sign-in-btn").button('loading');
             if (res.type === 'danger') {
                 $btn.button('reset');
                 Toastr.error(Message.filters(res.content));

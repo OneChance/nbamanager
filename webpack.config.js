@@ -1,25 +1,18 @@
- // nodejs 中的path模块
  var path = require('path');
  var HtmlWebpackPlugin = require('html-webpack-plugin')
  var webpack = require('webpack');
  var ExtractTextPlugin = require('extract-text-webpack-plugin');
+ var BabiliPlugin = require("babili-webpack-plugin");
 
  module.exports = {
      entry: {
          index: path.resolve(__dirname, './app/index.js')
      },
-     // 输出配置
      output: {
          path: path.resolve(__dirname, 'dist'),
          filename: '[name].[chunkhash].js',
-         publicPath: '',
+         publicPath: '', //https://www.nbamanager.win/static/
          chunkFilename: '[name].[chunkhash].js'
-     },
-     resolve: {
-         extensions: ['', '.js', '.vue'],
-         alias: {
-             'Vue': 'vue/dist/vue.js'
-         }
      },
      module: {
          rules: [{
@@ -27,8 +20,11 @@
              use: ['vue-loader']
          }, {
              test: /\.js$/,
-             loader: 'babel-loader?presets=es2015',
-             exclude: [path.resolve(__dirname, 'node_modules')]
+             loader: 'babel-loader',
+             exclude: [path.resolve(__dirname, 'node_modules')],
+             query: {
+                 presets: ['es2015']
+             }
          }, {
              test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
              use: ['url-loader?limit=1&name=images/[hash:8].[name].[ext]', 'image-webpack-loader']
@@ -47,9 +43,10 @@
          }]
      },
      resolve: {
-         extensions: [".js", ".css", ".scss"],
+         extensions: [".js", ".css", ".scss", ".vue"],
          alias: {
-             'vue': 'vue/dist/vue.min.js'
+             'vue': 'vue/dist/vue.min.js',
+             'jquery': "jquery/dist/jquery.min.js"
          }
      },
      devServer: {
@@ -74,8 +71,8 @@
          }), new webpack.optimize.CommonsChunkPlugin({
              name: 'manifest'
          }), new ExtractTextPlugin({
-             filename: 'style.[chunkhash].css'
-         }), new webpack.DefinePlugin({
+             filename: 'style.[contenthash].css'
+         }), new BabiliPlugin(), new webpack.DefinePlugin({
              'process.env': {
                  NODE_ENV: '"production"'
              }
