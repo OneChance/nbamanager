@@ -28,11 +28,11 @@ export default {
     },
     methods: {
         searchContract: function() {
-            Team.getContractLog(0, (res) => {
+            Team.getContractLog(0, this.searchNameContract).then((res) => {
                 if (res.data) {
                     this.contractLogs = res.data
                 }
-            }, this.searchNameContract);
+            });
         },
         clear: function() {
             this.contractLogs = [];
@@ -78,5 +78,9 @@ export default {
 .search-input:focus+span>#goSearchContract {
     border-color: #1aba9c;
     color: #1aba9c
+}
+
+b {
+    color: #1aba9c;
 }
 </style>

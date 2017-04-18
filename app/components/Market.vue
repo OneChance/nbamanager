@@ -63,12 +63,12 @@ export default {
     },
     methods: {
         searchPlayer: function() {
-            Market.getMarketPlayer(0, (res) => {
+            Market.getMarketPlayer(0, this.searchName, this.searchPos.toString()).then((res) => {
                 if (res.data) {
                     this.marketPlayers = res.data;
                     this.checkMore(res.data)
                 }
-            }, this.searchName, this.searchPos.toString());
+            });
         },
         clear: function() {
             this.marketPlayers = [];
@@ -90,15 +90,15 @@ export default {
             }
         },
         morePlayer: function() {
-            var $btn = $(this.$el).find(".more-player").button('loading');
+            let $btn = $(this.$el).find(".more-player").button('loading');
             this.page++;
-            Market.getMarketPlayer(this.page, (res) => {
+            Market.getMarketPlayer(this.page, this.searchName, this.searchPos.toString()).then((res) => {
                 if (res.data) {
                     this.marketPlayers = [...this.marketPlayers, ...res.data];
                     this.checkMore(res.data)
                 }
                 $btn.button('reset');
-            }, this.searchName, this.searchPos.toString());
+            });
         }
     },
     mounted: function() {
@@ -111,16 +111,14 @@ export default {
             }
         })
 
-        this.searchPlayer();
-
         //计时器
-        var now = new Date();
+        let now = new Date();
         if (now.getHours() < 15) {
             Hub.eventHub.$emit('trade-open', this.tradeOpen)
-            var openTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 15, 0, 0);
-            var count = Math.max((openTime.getTime() - now.getTime()), 0);
+            let openTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 15, 0, 0);
+            let count = Math.max((openTime.getTime() - now.getTime()), 0);
             $('.timer').countdown(count + now.valueOf(), (event) => {
-                var $this = $(this.$el);
+                let $this = $(this.$el);
                 switch (event.type) {
                     case "seconds":
                     case "minutes":
@@ -139,6 +137,10 @@ export default {
         } else {
             this.tradeOpen = true;
             Hub.eventHub.$emit('trade-open', this.tradeOpen)
+        }
+
+        if (this.tradeOpen) {
+            this.searchPlayer();
         }
     },
     updated: function() {

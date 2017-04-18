@@ -2,28 +2,16 @@ import Ajax from './ajax.js'
 import GlobalVue from '../globalVue.js'
 
 export default {
-    signIn: function(data, callback,serverErrorCallback) {
-        Ajax.post('/signIn/', data, callback,serverErrorCallback);
+    signIn: function(data) {
+        return Ajax.postData('/signIn/', data);
     },
-    isLogin: function(callback) {
-        Ajax.get('/isLogin/', "", callback);
+    isLogin: function() {
+        return Ajax.getData('/isLogin/', "");
     },
-    signOut: function(callback) {
-        Ajax.post('/signOut/', {}, callback);
+    signOut: function() {
+        return Ajax.postData('/signOut/', {});
     },
-    checkLogin(callback) {
-        this.isLogin((res) => {
-            if (res.type === 'success') {
-                GlobalVue.instance.$router.push('index');
-                if (callback) {
-                    callback();
-                }
-            } else {
-                GlobalVue.instance.$router.push('sign');
-            }
-        })
-    },
-    signUp: function(data, callback,serverErrorCallback) {
-        Ajax.post('/signUp/', data, callback,serverErrorCallback);
+    signUp: function(data) {
+        return Ajax.postData('/signUp/', data);
     }
 }

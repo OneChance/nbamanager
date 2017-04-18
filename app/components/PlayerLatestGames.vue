@@ -34,7 +34,7 @@ export default {
     }
 }
 
-var chartCommon = {
+let chartCommon = {
     fillColor: "rgba(151,187,205,0.5)",
     strokeColor: "rgba(151,187,205,1)",
     pointColor: "rgba(151,187,205,1)",

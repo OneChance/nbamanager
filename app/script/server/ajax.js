@@ -4,57 +4,54 @@ import Message from '../message.js'
 import Env from './env.js'
 
 export default {
-    post: function(apiUrl, data, callback, serverErrorCallback) {
-        ajaxReq(apiUrl, data, 'post', callback, serverErrorCallback);
+    async getData(apiUrl, data) {
+        return await ajaxReqPromise(apiUrl, data, 'get');
     },
-    get: function(apiUrl, data, callback, serverErrorCallback) {
-        ajaxReq(apiUrl, data, 'get', callback, serverErrorCallback);
+    async postData(apiUrl, data) {
+        return await ajaxReqPromise(apiUrl, data, 'post');
     }
 }
 
 let url = Env.baseURL;
-let ajaxReq = function(apiUrl, data, type, callback, serverErrorCallback) {
 
-    let options = {
-        contentType: "application/json; charset=utf-8",
-        xhrFields: {
-            withCredentials: true
-        },
-        url: url + apiUrl,
-        type: type,
-        dataType: "json",
-        success: function(res) {
-            if (res && res.content === 'login_status_error') {
-                $(".modal-backdrop").remove()
-                if (location.hash === '#/index') {
-                    Toastr.error(Message.filters('login_status_error'));
+let ajaxReqPromise = function(apiUrl, data, type) {
+    return new Promise(function(resolve, reject) {
+        let options = {
+            contentType: "application/json; charset=utf-8",
+            xhrFields: {
+                withCredentials: true
+            },
+            url: url + apiUrl,
+            type: type,
+            dataType: "json",
+            success: function(res) {
+                if (res && res.content === 'login_status_error') {
+                    $(".modal-backdrop").remove()
+                    if (location.hash === '#/index') {
+                        Toastr.error(Message.filters('login_status_error'));
+                    }
+                    GlobalVue.instance.$router.push('sign')
                 }
-                GlobalVue.instance.$router.push('sign')
-            } else {
-                if (callback) {
-                    callback(res);
-                }
-            }
-        },
-        error: function() {
-            Toastr.error(Message.filters('server_error'));
-            if (serverErrorCallback) {
-                serverErrorCallback();
+                resolve(res);
+            },
+            error: function() {
+                Toastr.error(Message.filters('server_error'));
+                reject();
             }
         }
-    }
 
-    if (data) {
-        var dataPass = {
-            data: data
-        };
-        if (type === 'post') {
-            dataPass = {
-                data: JSON.stringify(data)
+        if (data) {
+            let dataPass = {
+                data: data
+            };
+            if (type === 'post') {
+                dataPass = {
+                    data: JSON.stringify(data)
+                }
             }
+            Object.assign(options, dataPass);
         }
-        Object.assign(options, dataPass);
-    }
 
-    $.ajax(options);
+        $.ajax(options);
+    })
 }

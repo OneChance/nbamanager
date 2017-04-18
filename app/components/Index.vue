@@ -23,6 +23,7 @@
 </template>
 
 <script>
+require('../plugin/goup/jquery.goup.min.js')
 import MarketComponent from './Market.vue'
 import TeamComponent from './Team.vue'
 import Message from '../script/message.js'
@@ -33,29 +34,33 @@ export default {
 
     },
     mounted: function() {
-        Account.checkLogin(function() {
-            $.goup({
-                trigger: 100,
-                bottomOffset: 150,
-                locationOffset: 100,
-                title: '',
-                titleAsText: true
-            });
+        Account.isLogin().then((res) => {
+            if (res.type === 'success') {
+                $.goup({
+                    trigger: 100,
+                    bottomOffset: 50,
+                    locationOffset: 50,
+                    title: '',
+                    titleAsText: true
+                });
 
-            $('#common a').click(function(e) {
-                e.preventDefault();
-                $(this).tab('show');
-            });
+                $('#common a').click(function(e) {
+                    e.preventDefault();
+                    $(this).tab('show');
+                });
 
-            $("a[href='#market']").trigger('click');
+                $("a[href='#market']").trigger('click');
 
-            $('#common a').on('shown.bs.tab', (e) => {
-                if (e.target.hash === '#market') {
-                    this.$refs.market.searchPlayer();
-                } else {
-                    this.$refs.market.clear();
-                }
-            })
+                $('#common a').on('shown.bs.tab', (e) => {
+                    if (e.target.hash === '#market') {
+
+                    } else {
+                        this.$refs.market.clear();
+                    }
+                })
+            } else {
+                GlobalVue.instance.$router.push('sign');
+            }
         });
     },
     components: {

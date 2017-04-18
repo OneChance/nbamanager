@@ -151,20 +151,20 @@ export default {
         breakPlayer: function() {
             Team.breakPlayer({
                 id: this.player.playerId
-            }, (res) => {
+            }).then((res) => {
                 if (res.type === 'danger') {
                     Toastr.error(Message.filters(res.content))
                 } else if (res.type === 'success') {
                     $("#" + this.player.playerId + "-break-modal").modal('hide');
                     this.$emit('breaked', this.player.playerId);
                 }
-            })
+            });
         },
         signPlayer: function() {
             Team.signPlayer({
                 id: this.player.playerId,
                 pos: $("#" + this.player.playerId + "-team-pos").val()
-            }, (res) => {
+            }).then((res) => {
                 if (res.type === 'danger') {
                     Toastr.error(Message.filters(res.content))
                 } else if (res.type === 'success') {
@@ -184,7 +184,7 @@ export default {
         let vueComponent = this;
 
         $(this.$el).find('.collapse').on('shown.bs.collapse', () => {
-            Statistic.getStatistic(this.player.playerId, (res) => {
+            Statistic.getStatistic(this.player.playerId).then((res) => {
                 if (res.data) {
                     if (res.data.today) {
                         this.today = res.data.today;
@@ -214,7 +214,7 @@ export default {
             Team.changePlayerPos({
                 id: vueComponent.player.playerId,
                 pos: $(this).val()
-            }, (res) => {
+            }).then((res) => {
                 if (res.type === 'danger') {
                     $(this).val(vueComponent.prePos)
                     Toastr.error(Message.filters("change_player_pos_error") + ":" + Message.filters(res.content));

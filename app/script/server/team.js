@@ -1,24 +1,24 @@
 import Ajax from './ajax.js'
 
 export default {
-    getTeamInfo: function(callback) {
-        Ajax.get('/getTeamInfo/', null, callback);
+    getTeamInfo: function() {
+        return Ajax.getData('/getTeamInfo/', null);
     },
-    signPlayer: function(data, callback) {
-        Ajax.post('/signPlayer/', data, callback);
+    signPlayer: function(data) {
+        return Ajax.postData('/signPlayer/', data);
     },
-    breakPlayer: function(data, callback) {
-        Ajax.post('/breakPlayer/', data, callback);
+    breakPlayer: function(data) {
+        return Ajax.postData('/breakPlayer/', data);
     },
-    changePlayerPos: function(data, callback) {
-        Ajax.post('/changePlayerPos/', data, callback);
+    changePlayerPos: function(data) {
+        return Ajax.postData('/changePlayerPos/', data);
     },
-    getContractLog: function(page, callback, searchName) {
-        Ajax.get('/getContractLog/' + page + '/', {
+    getContractLog: function(page, searchName) {
+        return Ajax.getData('/getContractLog/' + page + '/', {
             'searchName': searchName
-        }, callback);
+        })
     },
-    changeTeamName: function(data, callback) {
-        Ajax.post('/changeTeamName/', data, callback);
+    changeTeamName: function(data) {
+        return Ajax.postData('/changeTeamName/', data);
     }
 }

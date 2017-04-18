@@ -1,7 +1,7 @@
 import Ajax from './ajax.js'
 
 export default {
-    getStatistic: function(playerId, callback) {
-        Ajax.get('/getStatistic/'+playerId+"/",null, callback);
+    getStatistic: function(playerId) {
+        return Ajax.getData('/getStatistic/'+playerId+"/",null);
     }
 }

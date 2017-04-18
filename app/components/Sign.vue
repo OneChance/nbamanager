@@ -15,7 +15,6 @@
 
         <input type="checkbox" checked data-toggle="switch" data-on-color="success" data-off-color="primary" id="sign_type" />
     </div>
-    <!--<img src="../style/images/logo.png" />-->
 </div>
 </template>
 
@@ -53,17 +52,17 @@ export default {
                 Account.signIn({
                     name: this.name,
                     password: this.password
-                }, this.signCallback, this.serverErrorCallback);
+                }).then(this.signCallback).catch(this.serverErrorCallback);
             } else {
                 Account.signUp({
                     name: this.name,
                     password: this.password
-                }, this.signCallback, this.serverErrorCallback)
+                }).then(this.signCallback).catch(this.serverErrorCallback);
             }
             return false;
         },
         signCallback: function(res) {
-            var $btn = $(this.$el).find(".sign-in-btn").button('loading');
+            let $btn = $(this.$el).find(".sign-in-btn").button('loading');
             if (res.type === 'danger') {
                 $btn.button('reset');
                 Toastr.error(Message.filters(res.content));
@@ -76,10 +75,24 @@ export default {
         }
     },
     mounted: function() {
-        Account.checkLogin();
+
+        $(document).on('keydown', (e) => {
+            if (e.keyCode === 13) {
+                if (this.password && this.name) {
+                    this.signIn();
+                }
+            }
+        });
+
         $(this.$el).find('[data-toggle="switch"]').bootstrapSwitch({
             onText: Message.filters("sign_in_switch"),
             offText: Message.filters("sign_up_switch"),
+        });
+
+        Account.isLogin().then((res) => {
+            if (res.type === 'success') {
+                GlobalVue.instance.$router.push('index');
+            }
         });
     },
     filters: {

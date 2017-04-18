@@ -89,18 +89,18 @@ export default {
             });
         },
         signOut: function() {
-            Account.signOut((res) => {
+            Account.signOut().then((res) => {
                 GlobalVue.instance.$router.push('sign');
             })
         },
         changeTeamName: function() {
             Team.changeTeamName({
                 name: this.team.name
-            }, (res) => {
+            }).then((res) => {
                 if (res.type === 'success') {
                     Toastr.success(Message.filters('team_name_changed'))
                 }
-            })
+            });
         }
     },
     mounted: function() {
@@ -120,7 +120,7 @@ export default {
 
         $("a[href='#team_players']").trigger('click');
 
-        Team.getTeamInfo((res) => {
+        Team.getTeamInfo().then((res) => {
             if (res.type !== 'danger') {
                 this.team = res.data;
                 this.teamPlayers = res.data.players.map(player => {
