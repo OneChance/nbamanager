@@ -7,7 +7,7 @@
                     <div class="input-group">
                         <input type="text" class="form-control search-input" v-model="searchName" :placeholder=" 'search_player' | msg ">
                         <span class="input-group-btn">
-                    <button class="btn" type="button" id="goSearch" @click="searchPlayer"><span class="fui-search"></span></button>
+                            <button class="btn" type="button" id="goSearch" @click="searchPlayer"><span class="fui-search"></span></button>
                         </span>
                     </div>
                 </div>
@@ -44,6 +44,7 @@
 </div>
 </template>
 <script>
+require('../plugin/countdown/css/style.css');
 import PlayerComponent from './Player.vue'
 import Market from '../script/server/market.js'
 import Message from '../script/message.js'
@@ -156,13 +157,21 @@ export default {
         msg: Message.filters
     }
 }
-require('../plugin/countdown/css/style.css');
 require('../plugin/countdown/js/jquery.countdown.js');
 </script>
 <style scoped>
 .search {
     margin-top: 10px;
     margin-bottom: 10px;
+}
+
+.li-list-leave-active {
+    position: absolute;
+    width: 100%;
+}
+
+.li-list-move {
+    transition: transform 0.5s;
 }
 
 .pos-filter {
@@ -181,39 +190,5 @@ require('../plugin/countdown/js/jquery.countdown.js');
 
 .trade_wait {
     margin-top: 10px;
-}
-
-.list-group-item {
-    padding: 15px 15px;
-}
-
-.li-list-enter-active,
-.fade-enter-active {
-    transition: all .5s ease;
-}
-
-.li-list-leave-active,
-.fade-leave-active {
-    transition: all .5s ease;
-}
-
-.li-list-enter,
-.li-list-leave-active {
-    transform: scale(0);
-    opacity: 0;
-}
-
-.fade-enter,
-.fade-leave-active {
-    opacity: 0;
-}
-
-.li-list-leave-active {
-    position: absolute;
-    width: 100%;
-}
-
-.li-list-move {
-    transition: transform .5s;
 }
 </style>

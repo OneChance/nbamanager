@@ -23,6 +23,7 @@
 </template>
 
 <script>
+require('../style/css/anim.scss')
 require('../plugin/goup/jquery.goup.min.js')
 import MarketComponent from './Market.vue'
 import TeamComponent from './Team.vue'

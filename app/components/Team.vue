@@ -161,27 +161,13 @@ export default {
     padding: 15px 15px;
 }
 
-.li-list-enter-active {
-    transition: all .5s ease;
-}
-
-.li-list-leave-active {
-    transition: all .5s ease;
-}
-
-.li-list-enter,
-.li-list-leave-active {
-    transform: scale(0);
-    opacity: 0;
-}
-
 .li-list-leave-active {
     position: absolute;
     width: 100%;
 }
 
 .li-list-move {
-    transition: transform .5s;
+    transition: transform 0.5s;
 }
 
 .sign-out-btn {

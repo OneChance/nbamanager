@@ -11,7 +11,7 @@
      output: {
          path: path.resolve(__dirname, 'dist'),
          filename: '[name].[chunkhash].js',
-         publicPath: '', //https://www.nbamanager.win/static/
+         publicPath: 'https://www.nbamanager.win/static/', //https://www.nbamanager.win/static/
          chunkFilename: '[name].[chunkhash].js'
      },
      module: {
@@ -63,6 +63,8 @@
              jQuery: "jquery/dist/jquery.min.js",
              $: "jquery/dist/jquery.min.js",
              Chart: "chart.js/dist/Chart.min.js"
+         }), new ExtractTextPlugin({
+             filename: 'style.[contenthash].css'
          }), new webpack.optimize.CommonsChunkPlugin({
              name: 'vendor',
              minChunks: function(module) {
@@ -70,8 +72,6 @@
              }
          }), new webpack.optimize.CommonsChunkPlugin({
              name: 'manifest'
-         }), new ExtractTextPlugin({
-             filename: 'style.[contenthash].css'
          }), new BabiliPlugin(), new webpack.DefinePlugin({
              'process.env': {
                  NODE_ENV: '"production"'

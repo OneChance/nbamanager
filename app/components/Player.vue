@@ -289,22 +289,4 @@ td {
 .contract h3 {
     margin-top: 10px;
 }
-
-.fade-enter-active {
-    transition: all .5s ease;
-}
-
-.fade-leave-active {
-    transition: all .5s ease;
-}
-
-.fade-enter,
-.fade-leave-active {
-    transform: scale(0);
-    opacity: 0;
-}
-
-.fade-leave-active {
-    opacity: 0;
-}
 </style>
