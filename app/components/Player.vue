@@ -12,18 +12,14 @@
         </div>
 
         <div class="contract">
-            <div>
-                <h3><b>${{player.sal}}</b></h3>
-            </div>
-            <div>
-                <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                    <transition name="fade">
-                        <button v-if="player.inTeam && tradeAble" type="button" class="btn btn-danger" data-toggle="modal" :data-target="'#'+player.playerId+'-break-modal'">{{ 'break_player' | msg }}</button>
-                    </transition>
-                    <transition name="fade">
-                        <button v-if="!player.inTeam && tradeAble" type="button" class="btn btn-success" data-toggle="modal" :data-target="'#'+player.playerId+'-sign-modal'">{{ 'sign_player' | msg }}</button>
-                    </transition>
-                </div>
+            <h3><b>${{player.sal}}</b></h3>
+            <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                <transition name="fade">
+                    <button v-if="player.inTeam && tradeAble" type="button" class="btn btn-danger" data-toggle="modal" :data-target="'#'+player.playerId+'-break-modal'">{{ 'break_player' | msg }}</button>
+                </transition>
+                <transition name="fade">
+                    <button v-if="!player.inTeam && tradeAble" type="button" class="btn btn-success" data-toggle="modal" :data-target="'#'+player.playerId+'-sign-modal'">{{ 'sign_player' | msg }}</button>
+                </transition>
             </div>
         </div>
 
@@ -262,13 +258,13 @@ export default {
 
 .player_info .info {
     display: inline-block;
-    vertical-align: top;
+    vertical-align: middle;
     margin-left: 10px;
 }
 
 .player_info .contract {
-    text-align: center;
     display: inline-block;
+    text-align: center;
     float: right;
 }
 
