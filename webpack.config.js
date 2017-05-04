@@ -32,13 +32,13 @@
              test: /\.css$/,
              use: ExtractTextPlugin.extract({
                  fallback: 'style-loader',
-                 use: ['css-loader?importLoaders=1', 'postcss-loader']
+                 use: ['css-loader?importLoaders=1&minimize=true', 'postcss-loader']
              })
          }, {
              test: /\.scss$/,
              use: ExtractTextPlugin.extract({
                  fallback: 'style-loader',
-                 use: ['css-loader?importLoaders=1', 'postcss-loader', 'sass-loader']
+                 use: ['css-loader?importLoaders=1&minimize=true', 'postcss-loader', 'sass-loader']
              })
          }]
      },
