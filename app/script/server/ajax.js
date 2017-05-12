@@ -4,17 +4,20 @@ import Message from '../message.js'
 import Env from './env.js'
 
 export default {
-    async getData(apiUrl, data) {
-        return await ajaxReqPromise(apiUrl, data, 'get');
+    getData(apiUrl, data) {
+        return ajaxReqPromise(apiUrl, data, 'get');
     },
-    async postData(apiUrl, data) {
-        return await ajaxReqPromise(apiUrl, data, 'post');
+    postData(apiUrl, data) {
+        return ajaxReqPromise(apiUrl, data, 'post');
     }
 }
 
 let url = Env.baseURL;
 
 let ajaxReqPromise = function(apiUrl, data, type) {
+
+    var Promise = require('es6-promise-polyfill').Promise;
+
     return new Promise(function(resolve, reject) {
         let options = {
             contentType: "application/json; charset=utf-8",

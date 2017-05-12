@@ -11,7 +11,7 @@
      output: {
          path: path.resolve(__dirname, 'dist'),
          filename: '[name].[chunkhash].js',
-         publicPath: 'https://www.nbamanager.win/static/', //https://www.nbamanager.win/static/
+         publicPath: 'http://www.nbamanager.win/', //https://www.nbamanager.win/static/ http://static.nbamanager.win/
          chunkFilename: '[name].[chunkhash].js'
      },
      module: {
