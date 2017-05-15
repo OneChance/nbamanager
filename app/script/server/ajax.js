@@ -27,6 +27,7 @@ let ajaxReqPromise = function(apiUrl, data, type) {
             url: url + apiUrl,
             type: type,
             dataType: "json",
+            crossDomain:true,
             success: function(res) {
                 if (res && res.content === 'login_status_error') {
                     $(".modal-backdrop").remove()
