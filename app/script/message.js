@@ -62,5 +62,7 @@ let msgs = {
     team_name_changed: "球队名称已变更",
     not_enough_money: "球队资金不足",
     signing: "进入中...",
-    loading: "加载中..."
+    loading: "加载中...",
+    invalid_sign: "无效的签约",
+    team_full: "球队人员已满"
 }

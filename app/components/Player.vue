@@ -151,10 +151,10 @@ export default {
                 if (res.type === 'danger') {
                     Toastr.error(Message.filters(res.content))
                 } else if (res.type === 'success') {
-                    $("#" + this.player.playerId + "-break-modal").modal('hide');
                     this.$emit('breaked', this.player.playerId);
                 }
             });
+            $("#" + this.player.playerId + "-break-modal").modal('hide');
         },
         signPlayer: function() {
             Team.signPlayer({
@@ -164,10 +164,10 @@ export default {
                 if (res.type === 'danger') {
                     Toastr.error(Message.filters(res.content))
                 } else if (res.type === 'success') {
-                    $("#" + this.player.playerId + "-sign-modal").modal('hide');
                     this.$emit('signed', this.player.playerId, $("#" + this.player.playerId + "-team-pos").val());
                 }
             })
+            $("#" + this.player.playerId + "-sign-modal").modal('hide');
         }
     },
     updated: function() {
