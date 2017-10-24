@@ -8,7 +8,7 @@
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane" id="team_players">
             <transition-group name="li-list" tag="ul" class="list-group">
-                <player-component class="li-list-item" v-on:poschanged="poschanged" v-on:breaked="breaked" v-for="(player,index) in teamPlayers" v-bind:player="player" v-bind:index="index" v-bind:key="player" v-bind:tradeAble="tradeAble"></player-component>
+                <player-component class="li-list-item" v-on:poschanged="poschanged" v-on:breaked="breaked" v-for="(player,index) in teamPlayers" v-bind:player="player" v-bind:index="index" v-bind:key="player" v-bind:tradeAble="tradeAble" v-bind:tradeOpen="tradeOpen"></player-component>
             </transition-group>
             <div v-if="teamPlayers.length<5" class="alert alert-warning" role="alert">{{ "team_not_full" | msg }}</div>
             <div v-if="somePosEmpty" class="alert alert-warning" role="alert">{{ "some_pos_empty" | msg }}</div>
@@ -54,6 +54,7 @@ export default {
         return {
             teamPlayers: [],
             team: {},
+            tradeOpen: false,
             tradeAble: true,
             somePosEmpty: false,
             teamNameChangeable: true
@@ -139,7 +140,7 @@ export default {
         })
 
         Hub.eventHub.$on('trade-open', (tradeOpen) => {
-            this.tradeAble = tradeOpen
+            this.tradeOpen = tradeOpen
         })
     },
     components: {

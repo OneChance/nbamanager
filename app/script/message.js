@@ -64,5 +64,7 @@ let msgs = {
     signing: "进入中...",
     loading: "加载中...",
     invalid_sign: "无效的签约",
-    team_full: "球队人员已满"
+    team_full: "球队人员已满",
+    ev_rank_today: "今日效率排行",
+    ev_rank_today_wait: "今日排名结果还未出炉"
 }

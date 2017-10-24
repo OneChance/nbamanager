@@ -1,46 +1,42 @@
 <template>
 <div role="tabpanel" class="tab-pane" id="market">
     <transition name="fade">
-        <div v-if="tradeOpen">
-            <div class="row search">
-                <div class="col-lg-12">
-                    <div class="input-group">
-                        <input type="text" class="form-control search-input" v-model="searchName" :placeholder=" 'search_player' | msg ">
-                        <span class="input-group-btn">
-                            <button class="btn" type="button" id="goSearch" @click="searchPlayer"><span class="fui-search"></span></button>
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group pos-filter">
-                <label class="checkbox primary" for="checkboxC">
-                <input type="checkbox" name="searchPos" data-toggle="checkbox" checked="checked" :value="'pos_c'|msg" id="checkboxC" v-model="searchPos">
-                <b>{{ 'pos_c' | msg }}</b>
-            </label>
-                <label class="checkbox primary" for="checkboxF">
-                <input type="checkbox" name="searchPos" data-toggle="checkbox" checked="checked" :value="'pos_f'|msg" id="checkboxF" v-model="searchPos">
-                <b>{{ 'pos_f' | msg }}</b>
-            </label>
-                <label class="checkbox primary" for="checkboxG">
-                <input type="checkbox" name="searchPos" data-toggle="checkbox" checked="checked" :value="'pos_g'|msg" id="checkboxG" v-model="searchPos">
-                <b>{{ 'pos_g' | msg }}</b>
-            </label>
-            </div>
-            <ul class="list-group">
-                <transition-group name="li-list" tag="ul" class="list-group">
-                    <player-component class="li-list-item" v-on:signed="signed" v-for="(player,index) in marketPlayers" v-bind:player="player" v-bind:index="index" v-bind:key="player" v-bind:tradeAble="tradeAble"></player-component>
-                </transition-group>
-                <button v-if="moreData" type="button" class="btn btn-success btn-lg btn-block more-player" :data-loading-text=" 'loading' | msg " @click="morePlayer">{{'more_player'|msg}}</button>
-            </ul>
-        </div>
-    </transition>
-    <transition name="fade">
         <div v-if="!tradeOpen" class="alert alert-warning trade_wait" role="alert">{{ "trade_wait" | msg }}
             <div class="timer">
                 <span class="hours"></span>:<span class="minutes"></span>:<span class="seconds"></span>
             </div>
         </div>
     </transition>
+    <div class="row search">
+        <div class="col-lg-12">
+            <div class="input-group">
+                <input type="text" class="form-control search-input" v-model="searchName" :placeholder=" 'search_player' | msg ">
+                <span class="input-group-btn">
+                        <button class="btn" type="button" id="goSearch" @click="searchPlayer"><span class="fui-search"></span></button>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group pos-filter">
+        <label class="checkbox primary" for="checkboxC">
+            <input type="checkbox" name="searchPos" data-toggle="checkbox" checked="checked" :value="'pos_c'|msg" id="checkboxC" v-model="searchPos">
+            <b>{{ 'pos_c' | msg }}</b>
+        </label>
+        <label class="checkbox primary" for="checkboxF">
+            <input type="checkbox" name="searchPos" data-toggle="checkbox" checked="checked" :value="'pos_f'|msg" id="checkboxF" v-model="searchPos">
+            <b>{{ 'pos_f' | msg }}</b>
+        </label>
+        <label class="checkbox primary" for="checkboxG">
+            <input type="checkbox" name="searchPos" data-toggle="checkbox" checked="checked" :value="'pos_g'|msg" id="checkboxG" v-model="searchPos">
+            <b>{{ 'pos_g' | msg }}</b>
+        </label>
+    </div>
+    <ul class="list-group">
+        <transition-group name="li-list" tag="ul" class="list-group">
+            <player-component class="li-list-item" v-on:signed="signed" v-for="(player,index) in marketPlayers" v-bind:player="player" v-bind:index="index" v-bind:key="player" v-bind:tradeAble="tradeAble" v-bind:tradeOpen="tradeOpen"></player-component>
+        </transition-group>
+        <button v-if="moreData" type="button" class="btn btn-success btn-lg btn-block more-player" :data-loading-text=" 'loading' | msg " @click="morePlayer">{{'more_player'|msg}}</button>
+    </ul>
 </div>
 </template>
 <script>
@@ -140,9 +136,7 @@ export default {
             Hub.eventHub.$emit('trade-open', this.tradeOpen)
         }
 
-        if (this.tradeOpen) {
-            this.searchPlayer();
-        }
+        this.searchPlayer();
     },
     updated: function() {
         //多选框
