@@ -15,9 +15,9 @@ let msgs = {
     search: "搜索",
     search_player: "搜索球员",
     sign_player: "签约",
-    break_player: "解约",
+    break_player: "解除合约",
     confirm_sign: "签约此球员",
-    confirm_break: "与此球员解约",
+    confirm_break: "与此球员解除合约",
     confirm_no: "否",
     confirm_yes: "是",
     change_player_pos_success: "位置已分配",
@@ -65,6 +65,11 @@ let msgs = {
     loading: "加载中...",
     invalid_sign: "无效的签约",
     team_full: "球队人员已满",
-    ev_rank_today: "今日效率排行",
-    ev_rank_today_wait: "今日排名结果还未出炉"
+    ev_rank_today: "今日TOP10",
+    ev_rank_today_wait: "无排名结果",
+    earn_today: "今日收益",
+    cost_today: "今日球员工资支出",
+    next_tradeable_date: "下一交易许可日",
+    trade_still_limit: "交易限制期内",
+    invalid_operation: "本日交易未开启"
 }

@@ -87,4 +87,8 @@ export default {
 .jumbotron h1 {
     display: inline-block;
 }
+
+@media (max-width:414px) {
+    
+}
 </style>

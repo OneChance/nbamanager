@@ -31,7 +31,8 @@ export default {
             Statistic.getEvRankToday().then((res) => {
                 if (res.data) {
                     this.players = res.data
-                    this.haveRes = true
+                    if (res.data.length > 0)
+                        this.haveRes = true
                 }
             });
         },

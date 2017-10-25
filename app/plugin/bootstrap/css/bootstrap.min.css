@@ -1257,18 +1257,6 @@ p {
     }
 }
 
-@media ( max-width :414px) {
-    h2, h3, h4 {
-        font-size: 90%
-    }
-}
-
-@media ( max-width :320px) {
-    h2, h3, h4 {
-        font-size: 50%
-    }
-}
-
 small, .small {
     font-size: 86%
 }
@@ -4682,12 +4670,6 @@ a.list-group-item.active>.badge, .nav-pills>.active>a>.badge {
 
 .nav-pills>li>a>.badge {
     margin-left: 3px
-}
-
-@media (max-width:414px) {
-    .jumbotron h1{
-        font-size: 23px;
-    }
 }
 
 .jumbotron {

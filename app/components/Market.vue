@@ -68,6 +68,7 @@ export default {
             });
         },
         clear: function() {
+            this.page = 0;
             this.marketPlayers = [];
         },
         signed: function(playerId, pos) {
@@ -76,6 +77,7 @@ export default {
             signedPlayer.inTeam = true;
             signedPlayer.ablePos = signedPlayer.pos; //先将球员的可打位置保存
             signedPlayer.pos = pos; //pos用于下拉框默认选中当前所打位置
+            signedPlayer.nextTradeableDate = Market.getNextTradeableDate()
             this.marketPlayers.splice(signedIndex, 1)
             Hub.eventHub.$emit('player-signed', signedPlayer)
         },
@@ -108,11 +110,13 @@ export default {
             }
         })
 
+        Market.getNextTradeableDate()
+
         //计时器
         let now = new Date();
         if (now.getHours() < 15) {
             Hub.eventHub.$emit('trade-open', this.tradeOpen)
-            let openTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 15, 0, 0);
+            let openTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 14, 5, 0);
             let count = Math.max((openTime.getTime() - now.getTime()), 0);
             $('.timer').countdown(count + now.valueOf(), (event) => {
                 let $this = $(this.$el);

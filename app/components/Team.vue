@@ -8,7 +8,7 @@
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane" id="team_players">
             <transition-group name="li-list" tag="ul" class="list-group">
-                <player-component class="li-list-item" v-on:poschanged="poschanged" v-on:breaked="breaked" v-for="(player,index) in teamPlayers" v-bind:player="player" v-bind:index="index" v-bind:key="player" v-bind:tradeAble="tradeAble" v-bind:tradeOpen="tradeOpen"></player-component>
+                <player-component class="li-list-item" v-on:poschanged="poschanged" v-on:breaked="breaked" v-for="(player,index) in teamPlayers" v-bind:player="player" v-bind:index="index" v-bind:key="player" v-bind:tradeAble="player.tradeAble" v-bind:tradeOpen="tradeOpen"></player-component>
             </transition-group>
             <div v-if="teamPlayers.length<5" class="alert alert-warning" role="alert">{{ "team_not_full" | msg }}</div>
             <div v-if="somePosEmpty" class="alert alert-warning" role="alert">{{ "some_pos_empty" | msg }}</div>
@@ -29,9 +29,17 @@
                         <th>{{ 'team_money' | msg }}</th>
                         <td><b>${{team.money}}</b></td>
                     </tr>
+                    <tr>
+                        <th>{{ 'earn_today' | msg }}</th>
+                        <td><b class="earn">${{team.earnToday}}</b></td>
+                    </tr>
+                    <tr>
+                        <th>{{ 'cost_today' | msg }}</th>
+                        <td><b class="cost">${{team.costToday}}</b></td>
+                    </tr>
                 </tbody>
             </table>
-            <button type="button" class="btn btn-inverse btn-lg btn-block sign-out-btn" @click="signOut">{{'sign_out'|msg}}</button>
+            <button type="button" class="btn btn-primary btn-lg btn-block sign-out-btn" @click="signOut">{{'sign_out'|msg}}</button>
         </div>
         <div role="tabpanel" class="tab-pane" id="contract_log">
             <contract-log-component ref="contracts"></contract-log-component>
@@ -55,7 +63,6 @@ export default {
             teamPlayers: [],
             team: {},
             tradeOpen: false,
-            tradeAble: true,
             somePosEmpty: false,
             teamNameChangeable: true
         }
@@ -121,11 +128,24 @@ export default {
 
         $("a[href='#team_players']").trigger('click');
 
+        let now = new Date();
+        let today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+
         Team.getTeamInfo().then((res) => {
             if (res.type !== 'danger') {
                 this.team = res.data;
                 this.teamPlayers = res.data.players.map(player => {
                     player.inTeam = true;
+
+                    let dateArray = player.nextTradeableDate.split("-")
+                    let nextTradeableDate = new Date(dateArray[0], dateArray[1] - 1, dateArray[2])
+
+                    if (today < nextTradeableDate) {
+                        player.tradeAble = false
+                    } else {
+                        player.tradeAble = true
+                    }
+
                     return player;
                 });
                 Hub.eventHub.$emit('team_players_size_change', this.teamPlayers.length)
@@ -178,6 +198,14 @@ export default {
 
 #team_players .alert {
     margin-top: -10px
+}
+
+.earn {
+    color: #e51c23;
+}
+
+.cost {
+    color: #8bc34a;
 }
 </style>
 </style>

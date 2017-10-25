@@ -1,27 +1,45 @@
 <template id="player">
 <li class="list-group-item player-card">
     <div class="player_info">
-        <img :src="img" class="clickImg" data-toggle="collapse" :href="'#collapse'+player.id" />
-        <div class="info">
-            <h4 class="player-name">{{player.name}}</h4>
-            <select class="form-control select select-primary mrs mbm" v-if="player.inTeam" :id="player.playerId+'-pos'" v-model="player.pos">
-              <option :text="'pos_empty' | msg">{{ 'pos_empty' | msg }}</option>
-              <option v-for="pos in multiPos" :text="pos">{{pos}}</option>
-            </select>
-            <h2 v-if="!player.inTeam" class="player-pos"><b>{{player.pos}}</b></h2>
-        </div>
-
-        <div class="contract">
-            <h3><b>${{player.sal}}</b></h3>
-            <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                <transition name="fade">
-                    <button v-if="player.inTeam && tradeAble && tradeOpen" type="button" class="btn btn-danger" data-toggle="modal" :data-target="'#'+player.playerId+'-break-modal'">{{ 'break_player' | msg }}</button>
-                </transition>
-                <transition name="fade">
-                    <button v-if="!player.inTeam && tradeAble && tradeOpen" type="button" class="btn btn-success" data-toggle="modal" :data-target="'#'+player.playerId+'-sign-modal'">{{ 'sign_player' | msg }}</button>
-                </transition>
-            </div>
-        </div>
+        <table class="table player_info_table">
+            <tbody>
+                <tr>
+                    <td rowspan="3" class="player_profile">
+                        <img :src="img" class="clickImg img-thumbnail" data-toggle="collapse" :href="'#collapse'+player.id" />
+                    </td>
+                    <td>
+                        <h4 class="player-name"><b>{{player.name}}</b></h4>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <select class="form-control select select-primary" v-if="player.inTeam" :id="player.playerId+'-pos'" v-model="player.pos">
+                          <option :text="'pos_empty' | msg">{{ 'pos_empty' | msg }}</option>
+                          <option v-for="pos in multiPos" :text="pos">{{pos}}</option>
+                        </select>
+                        <b v-if="!player.inTeam" class="player-pos">{{player.pos}}</b></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b v-if="!(tradeAble && tradeOpen)">${{player.sal}}</b>
+                        <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                            <transition name="fade">
+                                <div v-if="player.inTeam && !tradeAble && tradeOpen" class="alert alert-warning trade_wait" role="alert">
+                                    {{ 'next_tradeable_date' | msg }}:{{player.nextTradeableDate}}
+                                </div>
+                            </transition>
+                            <transition name="fade">
+                                <button v-if="player.inTeam && tradeAble && tradeOpen" type="button" class="btn btn-danger" data-toggle="modal" :data-target="'#'+player.playerId+'-break-modal'">{{ 'break_player' | msg }}:${{player.sal}}</button>
+                            </transition>
+                            <transition name="fade">
+                                <button v-if="!player.inTeam && tradeAble && tradeOpen" type="button" class="btn btn-success" data-toggle="modal" :data-target="'#'+player.playerId+'-sign-modal'">{{ 'sign_player' | msg }}:${{player.sal}}</button>
+                            </transition>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
         <div class="collapse statistic" :id="'collapse'+player.id">
             <ul class="nav nav-pills" id="statistic">
@@ -240,32 +258,40 @@ export default {
     margin-bottom: 0px;
 }
 
-.player_info>.clickImg {
-    width: 100px;
-    height: 100px;
-    border: 5px solid #2c3e50;
-    border-radius: 100px;
+.clickImg {
+    width: 110px;
+    height: 125px;
     cursor: pointer;
     background-color: #ecf0f1;
 }
 
-@media ( max-width :320px) {
-    .player_info>.clickImg {
-        width: 60px;
-        height: 60px;
+@media ( max-width :414px) {
+    .clickImg {
+        height: 90px;
+    }
+    .player_info_table td {
+        padding: 5px;
+    }
+    .player-name {
+        margin-top: 0px;
+        margin-bottom: 0px;
     }
 }
 
-.player_info .info {
-    display: inline-block;
+.player_info_table {}
+
+.player_info_table td {
+    text-align: center;
     vertical-align: middle;
-    margin-left: 10px;
 }
 
-.player_info .contract {
-    display: inline-block;
+.player_info_table th {
+    width: 20%;
     text-align: center;
-    float: right;
+}
+
+.player_profile {
+    width: 30%;
 }
 
 .statistic {
@@ -284,5 +310,10 @@ td {
 
 .contract h3 {
     margin-top: 10px;
+}
+
+.trade_wait {
+    padding: 0px;
+    margin-bottom: 0px !important;
 }
 </style>
