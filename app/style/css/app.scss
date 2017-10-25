@@ -45,3 +45,8 @@ html {
 .table th {
     vertical-align: middle !important;
 }
+@media ( max-width :414px) {
+    .nav-pills > li {
+        font-size: 15px;
+    }
+}

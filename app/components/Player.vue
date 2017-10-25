@@ -265,19 +265,6 @@ export default {
     background-color: #ecf0f1;
 }
 
-@media ( max-width :414px) {
-    .clickImg {
-        height: 90px;
-    }
-    .player_info_table td {
-        padding: 5px;
-    }
-    .player-name {
-        margin-top: 0px;
-        margin-bottom: 0px;
-    }
-}
-
 .player_info_table {}
 
 .player_info_table td {
@@ -315,5 +302,25 @@ td {
 .trade_wait {
     padding: 0px;
     margin-bottom: 0px !important;
+}
+
+.player-name {
+    font-size: 28px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+@media ( max-width :414px) {
+    .clickImg {
+        height: 90px;
+    }
+    .player_info_table td {
+        padding: 5px;
+    }
+    .player-name {
+        font-size: 18px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
 }
 </style>

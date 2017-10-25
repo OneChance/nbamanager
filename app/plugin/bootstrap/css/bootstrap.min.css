@@ -3772,12 +3772,6 @@ textarea.input-group-sm>.form-control, textarea.input-group-sm>.input-group-addo
     }
 }
 
-@media ( max-width :375px) {
-    .nav-pills>li, list-group-item>li {
-        font-size: 10px;
-    }
-}
-
 .nav-pills>li {
     float: left
 }
