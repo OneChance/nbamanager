@@ -22,20 +22,22 @@
                 </tr>
                 <tr>
                     <td>
-                        <b v-if="!(tradeAble && tradeOpen)">${{player.sal}}</b>
-                        <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                            <transition name="fade">
-                                <div v-if="player.inTeam && !tradeAble && tradeOpen" class="alert alert-warning trade_wait" role="alert">
-                                    {{ 'next_tradeable_date' | msg }}:{{player.nextTradeableDate}}
-                                </div>
-                            </transition>
-                            <transition name="fade">
-                                <button v-if="player.inTeam && tradeAble && tradeOpen" type="button" class="btn btn-danger" data-toggle="modal" :data-target="'#'+player.playerId+'-break-modal'">{{ 'break_player' | msg }}:${{player.sal}}</button>
-                            </transition>
-                            <transition name="fade">
-                                <button v-if="!player.inTeam && tradeAble && tradeOpen" type="button" class="btn btn-success" data-toggle="modal" :data-target="'#'+player.playerId+'-sign-modal'">{{ 'sign_player' | msg }}:${{player.sal}}</button>
-                            </transition>
+                        <div v-if="!(tradeAble && tradeOpen)">
+                            <b class="player-sal">
+                              ${{player.sal}}
+                              <transition name="fade">
+                                  <div v-if="player.inTeam && !tradeAble && tradeOpen" class="alert alert-warning trade-wait" role="alert">
+                                      {{ 'next_tradeable_date' | msg }}:{{player.nextTradeableDate}}
+                                  </div>
+                              </transition>
+                            </b>
                         </div>
+                        <transition name="fade">
+                            <button v-if="player.inTeam && tradeAble && tradeOpen" type="button" class="btn btn-danger" data-toggle="modal" :data-target="'#'+player.playerId+'-break-modal'">{{ 'break_player' | msg }}:${{player.sal}}</button>
+                        </transition>
+                        <transition name="fade">
+                            <button v-if="!player.inTeam && tradeAble && tradeOpen" type="button" class="btn btn-success" data-toggle="modal" :data-target="'#'+player.playerId+'-sign-modal'">{{ 'sign_player' | msg }}:${{player.sal}}</button>
+                        </transition>
                     </td>
                 </tr>
             </tbody>
@@ -299,18 +301,24 @@ td {
     margin-top: 10px;
 }
 
-.trade_wait {
-    padding: 0px;
-    margin-bottom: 0px !important;
-}
-
 .player-name {
     font-size: 28px;
     margin-top: 0px;
     margin-bottom: 0px;
 }
 
-@media ( max-width :414px) {
+.player-sal {
+    font-size: 28px;
+}
+
+.trade-wait {
+    font-size: 12px;
+    margin-top: 5px;
+    margin-bottom: 0px;
+    padding: 10px;
+}
+
+@media ( max-width :415px) {
     .clickImg {
         height: 90px;
     }
@@ -321,6 +329,12 @@ td {
         font-size: 18px;
         margin-top: 0px;
         margin-bottom: 0px;
+    }
+    .player-pos {
+        font-size: 16px;
+    }
+    .player-sal {
+        font-size: 16px;
     }
 }
 </style>
