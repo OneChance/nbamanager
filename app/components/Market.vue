@@ -116,7 +116,7 @@ export default {
         let now = new Date();
         if (now.getHours() < 15) {
             Hub.eventHub.$emit('trade-open', this.tradeOpen)
-            let openTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 14, 5, 0);
+            let openTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 15, 0, 0);
             let count = Math.max((openTime.getTime() - now.getTime()), 0);
             $('.timer').countdown(count + now.valueOf(), (event) => {
                 let $this = $(this.$el);
