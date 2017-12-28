@@ -5,7 +5,7 @@
             <tbody>
                 <tr>
                     <td rowspan="3" class="player_profile">
-                        <img :src="img" class="clickImg img-thumbnail" data-toggle="collapse" :href="'#collapse'+player.id" />
+                        <img :src="img" class="clickImg img-thumbnail" data-toggle="collapse" :href="'#collapse'+player.uuid" />
                     </td>
                     <td>
                         <h4 class="player-name"><b>{{player.name}}</b></h4>
@@ -13,7 +13,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <select class="form-control select select-primary" v-if="player.inTeam" :id="player.playerId+'-pos'" v-model="player.pos">
+                        <select class="form-control select select-primary" v-if="player.inTeam" :id="player.uuid+'-pos'" v-model="player.pos">
                           <option :text="'pos_empty' | msg">{{ 'pos_empty' | msg }}</option>
                           <option v-for="pos in multiPos" :text="pos">{{pos}}</option>
                         </select>
@@ -33,23 +33,23 @@
                             </b>
                         </div>
                         <transition name="fade">
-                            <button v-if="player.inTeam && tradeAble && tradeOpen" type="button" class="btn btn-danger" data-toggle="modal" :data-target="'#'+player.playerId+'-break-modal'">{{ 'break_player' | msg }}:${{player.sal}}</button>
+                            <button v-if="player.inTeam && tradeAble && tradeOpen" type="button" class="btn btn-danger" data-toggle="modal" :data-target="'#'+player.uuid+'-break-modal'">{{ 'break_player' | msg }}:${{player.sal}}</button>
                         </transition>
                         <transition name="fade">
-                            <button v-if="!player.inTeam && tradeAble && tradeOpen" type="button" class="btn btn-success" data-toggle="modal" :data-target="'#'+player.playerId+'-sign-modal'">{{ 'sign_player' | msg }}:${{player.sal}}</button>
+                            <button v-if="!player.inTeam && tradeAble && tradeOpen" type="button" class="btn btn-success" data-toggle="modal" :data-target="'#'+player.uuid+'-sign-modal'">{{ 'sign_player' | msg }}:${{player.sal}}</button>
                         </transition>
                     </td>
                 </tr>
             </tbody>
         </table>
 
-        <div class="collapse statistic" :id="'collapse'+player.id">
+        <div class="collapse statistic" :id="'collapse'+player.uuid">
             <ul class="nav nav-pills" id="statistic">
-                <li role="presentation" class="active"><a :href="'#'+player.id+'-today'">{{'today'|msg}}</a></li>
-                <li role="presentation"><a :href="'#'+player.id+'-latest-games'">{{'latest'|msg}}</a></li>
+                <li role="presentation" class="active"><a :href="'#'+player.uuid+'-today'">{{'today'|msg}}</a></li>
+                <li role="presentation"><a :href="'#'+player.uuid+'-latest-games'">{{'latest'|msg}}</a></li>
             </ul>
             <div class="tab-content player-statistic">
-                <div role="tabpanel" class="tab-pane active" :id="player.id+'-today'">
+                <div role="tabpanel" class="tab-pane active" :id="player.uuid+'-today'">
                     <table class="table table-bordered table-striped table-hover today-info">
                         <tbody>
                             <tr>
@@ -91,15 +91,15 @@
                         </tbody>
                     </table>
                 </div>
-                <div role="tabpanel" class="tab-pane" :id="player.id+'-latest-games'">
-                    <player-latest-games v-bind:playerId="player.id" v-bind:latest="latest"></player-latest-games>
+                <div role="tabpanel" class="tab-pane" :id="player.uuid+'-latest-games'">
+                    <player-latest-games v-bind:playerId="player.uuid" v-bind:latest="latest"></player-latest-games>
                 </div>
             </div>
         </div>
     </div>
 
     <!--sign modal-->
-    <div class="modal" :id="player.playerId+'-sign-modal'" tabindex="-1" role="dialog" aria-labelledby="signModal">
+    <div class="modal" :id="player.uuid+'-sign-modal'" tabindex="-1" role="dialog" aria-labelledby="signModal">
         <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -107,7 +107,7 @@
                     <h4 class="modal-title" id="mySmallModalLabel">{{this.player.name}}</h4>
                 </div>
                 <div class="modal-body">
-                    <select class="form-control select select-primary mrs mbm" :id="player.playerId+'-team-pos'">
+                    <select class="form-control select select-primary mrs mbm" :id="player.uuid+'-team-pos'">
                       <option v-for="pos in multiPos" :text="pos">{{pos}}</option>
                     </select>
                     <h4><b>${{player.sal}}</b>{{ 'confirm_sign' | msg }}？</h4>
@@ -121,7 +121,7 @@
     </div>
 
     <!--break modal-->
-    <div class="modal" :id="player.playerId+'-break-modal'" tabindex="-1" role="dialog" aria-labelledby="breakModal">
+    <div class="modal" :id="player.uuid+'-break-modal'" tabindex="-1" role="dialog" aria-labelledby="breakModal">
         <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -151,7 +151,7 @@ export default {
     props: ['player', 'index', 'tradeAble', 'tradeOpen'],
     data: function() {
         return {
-            img: require("../style/images/player/" + this.player.playerId + ".jpg"),
+            img: require("../style/images/player/" + this.player.uuid + ".jpg"),
             today: {},
             latest: {},
             prePos: this.player.pos //记录改变之前的位置,用于改变位置操作失败后的恢复
@@ -166,33 +166,33 @@ export default {
     methods: {
         breakPlayer: function() {
             Team.breakPlayer({
-                id: this.player.playerId
+                uuid: this.player.uuid
             }).then((res) => {
                 if (res.type === 'danger') {
                     Toastr.error(Message.filters(res.content))
                 } else if (res.type === 'success') {
-                    this.$emit('breaked', this.player.playerId);
+                    this.$emit('breaked', this.player.uuid);
                 }
             });
-            $("#" + this.player.playerId + "-break-modal").modal('hide');
+            $("#" + this.player.uuid + "-break-modal").modal('hide');
         },
         signPlayer: function() {
             Team.signPlayer({
-                id: this.player.playerId,
-                pos: $("#" + this.player.playerId + "-team-pos").val()
+                uuid: this.player.uuid,
+                pos: $("#" + this.player.uuid + "-team-pos").val()
             }).then((res) => {
                 if (res.type === 'danger') {
                     Toastr.error(Message.filters(res.content))
                 } else if (res.type === 'success') {
-                    this.$emit('signed', this.player.playerId, $("#" + this.player.playerId + "-team-pos").val());
+                    this.$emit('signed', this.player.uuid, $("#" + this.player.uuid + "-team-pos").val());
                 }
             })
-            $("#" + this.player.playerId + "-sign-modal").modal('hide');
+            $("#" + this.player.uuid + "-sign-modal").modal('hide');
         }
     },
     updated: function() {
         this.$nextTick(function() {
-            this.img = require("../style/images/player/" + this.player.playerId + ".jpg")
+            this.img = require("../style/images/player/" + this.player.uuid + ".jpg")
         });
     },
     mounted: function() {
@@ -200,7 +200,7 @@ export default {
         let vueComponent = this;
 
         $(this.$el).find('.collapse').on('shown.bs.collapse', () => {
-            Statistic.getStatistic(this.player.playerId).then((res) => {
+            Statistic.getStatistic(this.player.uuid).then((res) => {
                 if (res.data) {
                     if (res.data.today) {
                         this.today = res.data.today;
@@ -226,9 +226,9 @@ export default {
             return false;
         });
 
-        $("#" + this.player.playerId + "-pos").on("change", function() {
+        $("#" + this.player.uuid + "-pos").on("change", function() {
             Team.changePlayerPos({
-                id: vueComponent.player.playerId,
+                uuid: vueComponent.player.uuid,
                 pos: $(this).val()
             }).then((res) => {
                 if (res.type === 'danger') {

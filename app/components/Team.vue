@@ -78,7 +78,7 @@ export default {
     },
     methods: {
         breaked: function(playerId) {
-            let breakedIndex = this.teamPlayers.findIndex(p => p.playerId === playerId);
+            let breakedIndex = this.teamPlayers.findIndex(p => p.uuid === playerId);
             let breakedPlayer = this.teamPlayers.splice(breakedIndex, 1)[0];
             let date = new Date();
             let now = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();

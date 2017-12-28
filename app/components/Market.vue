@@ -72,7 +72,7 @@ export default {
             this.marketPlayers = [];
         },
         signed: function(playerId, pos) {
-            let signedIndex = this.marketPlayers.findIndex(p => p.playerId === playerId);
+            let signedIndex = this.marketPlayers.findIndex(p => p.uuid === playerId);
             let signedPlayer = this.marketPlayers[signedIndex];
             signedPlayer.inTeam = true;
             signedPlayer.ablePos = signedPlayer.pos; //先将球员的可打位置保存
